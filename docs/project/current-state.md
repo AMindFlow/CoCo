@@ -9,7 +9,7 @@ read_when:
 
 ## 已确认基线
 
-初始化模板已提交；本分支已完成 v1.2 规则适配并推进 DSH PoC，尚无可运行 Coordinator / MCP / Adapter 产品。
+PR #1 已合入 main，完成 v1.2 规则适配并推进 DSH PoC，尚无可运行 Coordinator / MCP / Adapter 产品。
 已采用 GitHub Flow，保留通用规则、需求/AC 门禁、人工最终验收、文档预算、metadata 与渐进式阅读。
 角色及工作流用于当前手动协作，不表示产品自动派发、事件和权限机制已经实现。
 需求与技术栈的权威事实见 [概览](overview.md) 和 [需求索引](../requirements/README.md)。
@@ -31,6 +31,7 @@ Desktop MCP / Thread 控制、Review SHA 映射、CI / Merge Queue 及双项目�
 
 ## 下一步
 
-先完成本轮规则与草案的独立静态审查，再按任务清单推进真实 PoC 和最小闭环。
+新会话从 [交接入口](next-session.md) 开始；规则与草案的本地独立静态审查已经完成，不把它重复当作新交付。
+优先准备 T006/T007 的验证合同与真实 PoC；T005 整项及后续恢复验证仍保持未完成。
 Phase 1 正式实现前由独立 Tester 形成测试合同，Leader 复核；不从技术草案直接跳到大规模代码实现。
 远端地址和配置会变化，操作前读 Git remote 与 GitHub 实时状态；本文件不复制远端快照。
