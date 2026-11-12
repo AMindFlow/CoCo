@@ -1,0 +1,147 @@
+{
+  "observed_on": "2026-11-12",
+  "versions": {
+    "codex": "0.166.0",
+    "dsh": "0.2.2-rc.1"
+  },
+  "scope": "Isolated temporary HOME / CODEX_HOME / DSH_HOME, no credentials injected, no Desktop thread or real repository writes.",
+  "redactions": [
+    "local paths",
+    "probe session ID",
+    "host identifiers",
+    "initialization user agent"
+  ],
+  "codex": {
+    "requests": [
+      {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "coco_phase0",
+            "version": "0.0.0"
+          }
+        }
+      },
+      {
+        "method": "initialized",
+        "params": {}
+      },
+      {
+        "id": 2,
+        "method": "thread/loaded/list",
+        "params": {}
+      }
+    ],
+    "responses": [
+      {
+        "id": 1,
+        "result": {
+          "platformFamily": "unix",
+          "platformOs": "macos"
+        }
+      },
+      {
+        "id": 2,
+        "result": {
+          "data": [],
+          "nextCursor": null
+        }
+      }
+    ],
+    "exit_code": 0,
+    "initial_request_error": {
+      "error": {
+        "code": -32600,
+        "message": "Invalid request: missing field `params`"
+      },
+      "id": 2
+    }
+  },
+  "dsh_unknown_session": {
+    "arguments": [
+      "headless",
+      "--json",
+      "--session-id",
+      "coco-nonexistent-session",
+      "--approval-policy",
+      "never",
+      "Return only PROBE"
+    ],
+    "events": [
+      {
+        "type": "error",
+        "message": "session \"coco-nonexistent-session\" does not exist; omit --session-id to start a new Session"
+      }
+    ],
+    "exit_code": 1,
+    "non_json_stdout_lines": 0
+  },
+  "dsh_new_session": {
+    "arguments": [
+      "headless",
+      "--json",
+      "--approval-policy",
+      "never",
+      "Do not use any tools. Reply only COCO_PHASE0_PROBE."
+    ],
+    "events": [
+      {
+        "type": "session",
+        "sessionId": "<probe-session>",
+        "cwd": "<isolated-home>"
+      },
+      {
+        "type": "status",
+        "phase": "turn_start",
+        "turn": 1
+      },
+      {
+        "type": "status",
+        "phase": "step_start",
+        "turn": 1,
+        "step": 1
+      },
+      {
+        "type": "status",
+        "phase": "step_end",
+        "turn": 1,
+        "step": 1
+      },
+      {
+        "type": "status",
+        "phase": "turn_end",
+        "turn": 1,
+        "reason": {
+          "kind": "error",
+          "error": {
+            "message": "llm-deepseek: no API key for provider route \"deepseek-official\"; store DEEPSEEK_API_KEY through the credentials service (the web Models page writes it), or export DEEPSEEK_API_KEY in the launching environment",
+            "code": "MISSING_CREDENTIAL"
+          }
+        }
+      },
+      {
+        "type": "final",
+        "sessionId": "<probe-session>",
+        "reason": {
+          "kind": "error",
+          "error": {
+            "message": "llm-deepseek: no API key for provider route \"deepseek-official\"; store DEEPSEEK_API_KEY through the credentials service (the web Models page writes it), or export DEEPSEEK_API_KEY in the launching environment",
+            "code": "MISSING_CREDENTIAL"
+          }
+        },
+        "text": ""
+      }
+    ],
+    "exit_code": 1
+  },
+  "not_verified": [
+    "successful model turn",
+    "valid-session context recovery",
+    "sandbox enforcement",
+    "Desktop MCP",
+    "Desktop thread control",
+    "GitHub Review/CI/Merge Queue",
+    "Coordinator multi-project delivery or recovery"
+  ]
+}

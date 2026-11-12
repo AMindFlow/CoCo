@@ -1,152 +1,62 @@
 ---
-summary: Defines canonical branch roles, lineage, merge strategy, release and hotfix flow, and remote protection rules.
+summary: 定义 CoCo 的 GitHub Flow、Direct 与 Staged 集成边界以及远端合并门槛。
 read_when:
-  - choosing a source branch, target branch, branch type, or merge strategy
-  - planning a release, hotfix, fix-forward, or stable-version maintenance flow
-  - configuring or reviewing remote branch protection and pull-request routing
+  - 创建分支、决定 PR 目标或选择集成模式
+  - 调整合并策略、发布方式或远端分支保护
 ---
 
-# VCS Workflow
+# GitHub Flow
 
-This document is the canonical human-readable branch, merge, release, hotfix, and remote protection workflow.
+## 分支与生命周期
 
-Use `docs/workflow/git.md` for command-level Git safety, task commit cadence, and history operations.
+`main` 是唯一长期交付基线。短分支从最新已核验的 `main` 创建，通过 PR 返回 `main`。
+原初始化的 `dev` 仅是历史分支，不作为后续源或合并目标；不自动删除历史分支。
+不再要求 `dev → release/* → main`，不维持常规版本维护分支。
 
-## Branch Roles
+| 分支 | 来源 | 目标与职责 |
+| --- | --- | --- |
+| `feature/*`、`fix/*`、`chore/*`、`docs/*` | `main` | 单项变更，经 PR 返回 `main` |
+| `spike/*` | `main` | 可丢弃实验；交付时整理为可审查 PR |
+| `task/<run>` | `main` 的已记录 Base SHA | Staged 集成分支，最终 PR 到 `main` |
+| `work/<run>/<package>` | 计划指定的 `main` 或 `task/<run>` SHA | 独立 Worktree，PR 到计划中的目标 |
 
-| Branch | Role | Source | Normal target |
-|---|---|---|---|
-| `main` | Default stable snapshot | stable `release/*` | n/a |
-| `dev` | Integration branch for next-version development | short-lived work and forwarded release fixes | `release/*` |
-| `release/*` | Candidate release; after promotion, version maintenance line | `dev` | `main` and `dev` |
-| `feature/*` | Product or business behavior change | `dev` | `dev` |
-| `refactor/*` | Internal restructuring without intended behavior change | `dev` | `dev` |
-| `fix/*` | Non-production bug fix for next development version | `dev` | `dev` |
-| `chore/*` | Tooling, dependencies, build scripts, or repository maintenance | `dev` | `dev` |
-| `spike/*` | Investigation or experiment | `dev` | usually none |
-| `hotfix/*` | Urgent fix for the current stable version | stable `release/<version>` | same `release/<version>` |
+开始工作前核对工作区和分支；获取远端失败时，不声称本地 `main` 最新。
+不直接向 `main` 提交或推送，不重写受保护或已共享分支历史。
+全新空远端可普通推送现有、已批准的初始化提交建立 `main` 基线；不夹带后续工作或重写已存在分支。
+紧急修复同样从 `main` 创建短分支并经过 PR，不能以 hotfix 为由跳过门禁。
 
-Avoid `test/*` as a long-lived branch category. Testing environments belong in CI/CD environment configuration, not permanent Git branches.
+## Direct 与 Staged
 
-## Lineage Model
+默认 Direct：独立可交付 PR 直接以 `main` 为目标。
+Leader 明确工作包、Contract Owner、依赖、授权和目标；并行数量不决定集成模式。
 
-- `main` is a promotion sink only. It is produced by accepted stable `release/*` branches.
-- Do not create feature, fix, hotfix, or future release work from `main`.
-- `release/<version>` starts from `dev`, stabilizes, then promotes to `main` when accepted.
-- After promotion, the same `release/<version>` remains the maintenance line for that stable version.
-- Fixes accepted on a release line must be forwarded to `dev` so future releases include them.
-- This stays maintainable when `main` receives only release promotions and release fixes are consistently forwarded.
-- The main risk is conflict when `dev` has moved ahead; handle that during release-to-dev or hotfix-forwarding work, not by merging `main` into `dev`.
+只有耦合工作无法独立保持目标分支可交付时使用 Staged：
 
-## Protected Branch Rules
+1. 冻结合同并记录 Base SHA，创建 `task/<run>`。
+2. Implementer 独占工作分支和 Worktree，Worker PR 指向集成分支。
+3. 按 DAG 集成，集成分支始终只有一个 Integration Owner。
+4. 以固定集成 SHA 完成整体 AC 和 Integration Gate。
+5. 最终 PR 指向 `main`；排队与合并后确认实际合并事实。
 
-- **Do not** commit directly to `main`.
-- **Do not** commit directly to `dev` unless the user explicitly requests repository maintenance.
-- **Do not** merge `dev` directly into `main`.
-- **Do not** merge short-lived branches directly into `main`.
-- **Do not** rebase `main`, `dev`, or `release/*`.
-- **Do not** force-push protected branches.
-- **Do not** overwrite uncommitted user work.
+Worker PR 合入集成分支不代表 Feature 交付，也不解除要求最终交付的下游依赖。
+切换模式先停止受影响自动合并，由 Leader 修订计划；不自动 rebase 或改写历史。
 
-## Repository Bootstrap Exception
+## PR 与 Merge Queue
 
-- A new standalone repository with no history may create one governance bootstrap commit directly on `main`.
-- The bootstrap commit must contain only the reviewed initialization scaffold and use `chore(project): initialize repository`.
-- Create `dev` from that commit and finish with `dev` checked out.
-- The bootstrap commit is not a release promotion. Do not use this exception in an existing repository, a non-empty merge, or a repository with prior commits; every later `main` change must come from an accepted stable `release/*` branch.
+- PR 标题与 squash 提交采用 Conventional Commits；命令规则见 [Git 操作](git.md)。
+- 默认 squash merge；确需保留历史时由计划说明。
+- 门禁包含当前 SHA 的 CI、有效独立 Review、适用 AC、合同版本和授权。
+- Codex 无评论不等于通过，Code Review 不等于 GitHub 正式 Approval。
+- 支持 Merge Queue 的验收仓库，最终 PR 必须原生入队；不自建队列冒充 GitHub。
+- Required Checks 响应 `pull_request` 与 `merge_group`，验证各自实际 SHA。
+- 队列不可用、保护缺失或权限不足时报告阻塞；降级验收需明确批准并标记差异。
+- 不因具备 admin 凭据而绕过规则、直接合并或伪造审批。
 
-## Short-Lived Work
+## 发布、撤销与保护
 
-Create short-lived development branches from the latest `dev`.
+发布从已验收 `main` SHA 出发；tag、远端发布或部署按明确授权操作。
+已合并变更采用独立 revert PR 撤销并重新验证；不自动回退共享主分支。
+短分支或 Worktree 清理须核对归属、合并事实和恢复证据。
+本文件是工作约定，实际 GitHub 保护须管理员配置并核验，见 [安全与人工门槛](security.md)。
 
-- Keep each branch scoped to one coherent task.
-- Prefer local rebase only while the branch is unshared.
-- Do not rebase shared branches.
-- Merge `feature/*`, `refactor/*`, `fix/*`, and `chore/*` back to `dev` with squash merge unless the user explicitly requests preserved internal history.
-- Do not merge `spike/*` unless it is converted into a clean change; if merged, squash it.
-
-## Release Flow
-
-Cut a release from `dev`:
-
-```bash
-git checkout dev
-git pull
-git checkout -b release/<version>
-git push -u origin release/<version>
-```
-
-After a release is cut:
-
-- `release/<version>` accepts only stabilization work.
-- `dev` continues next-version development.
-- New features continue from `dev`, not from `release/<version>`.
-
-Allowed on `release/*`: bug fixes, documentation updates, changelog updates, version bumps, config corrections, migration corrections, and deployment script corrections.
-
-Forbidden on `release/*`: new features, large refactors, experiments, unrelated cleanup, and temporary public-beta hacks that should not return to `dev`.
-
-Stabilization branches should start from the target release branch:
-
-- `bugfix/release-<version>-<short-description>` for release bug fixes
-- `docs/release-<version>-<short-description>` for release documentation
-- `chore/release-<version>-<short-description>` for release maintenance when useful
-
-Promote an accepted release to `main` with a normal merge:
-
-```bash
-git checkout main
-git pull
-git merge --no-ff release/<version>
-git tag v<version>
-git push origin main --tags
-```
-
-Do not squash merge `release/*` into `main`.
-
-## Returning Release Fixes To Dev
-
-Forward release-line fixes to `dev` after they are accepted, whether before or after promotion to `main`.
-
-- Use a normal merge when all release-line changes should enter future development.
-- Use cherry-pick when only specific fixes should enter `dev` or a full merge would bring release-only changes.
-- Resolve conflicts according to the future `dev` behavior, not old release behavior.
-- Stop and request review when conflict semantics are unclear.
-- Do not merge `main` into `dev` as the return path.
-
-## Hotfix Flow
-
-Create a hotfix from the stable `release/<version>` currently represented by `main`, not from the newest release candidate:
-
-```bash
-git checkout release/<version>
-git pull
-git checkout -b hotfix/<version-or-issue>-<short-description>
-```
-
-Merge the hotfix back to the same `release/<version>`, promote that release line to `main`, then forward the fix to `dev` and any active newer `release/*` branch that needs it.
-
-Forward-port with a merge when the whole hotfix branch is safe to transfer. Use `cherry-pick -x` when only the patch should move. Apply the same conflict rule as release-to-dev forwarding.
-
-## Merge Strategy
-
-| Source | Target | Strategy |
-|---|---|---|
-| `feature/*`, `refactor/*`, `fix/*`, `chore/*` | `dev` | squash merge |
-| `spike/*` | `dev` | usually do not merge; if merged, squash |
-| `bugfix/release-*`, `docs/release-*`, `chore/release-*` | `release/*` | squash or normal merge |
-| `release/*` | `main` | normal merge, no squash |
-| `release/*` | `dev` | normal merge, or cherry-pick selected fixes |
-| `hotfix/*` | same stable `release/*` | squash or normal merge |
-| `hotfix/*` patch | `dev` or active newer `release/*` | merge or `cherry-pick -x` |
-
-## Remote Protection
-
-Local behavior rules only constrain people and agents that follow them. Remote enforcement requires repository rules, branch protection, required pull requests, required status checks, required reviews, tag restrictions, CI checks, or equivalent hosting controls.
-
-Remote policy should distinguish release branch creation from release branch updates:
-
-- Allow authorized creation of new `release/*` branches from the approved release-cut flow.
-- Protect `main` from every source except stable release promotion.
-- Protect existing `release/*` branches from direct commits, force-push, and deletion.
-- Require stabilization and hotfix changes to enter existing `release/*` branches through reviewable PRs or MRs.
+参考：[GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow)、[Merge Queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue)。

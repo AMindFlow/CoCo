@@ -48,6 +48,7 @@ Exceptions:
 - thin platform aliases such as `CLAUDE.md` and `GEMINI.md`
 - standard SDD artifacts under `docs/specs/<lifecycle>/<feature-slice-name>/`, whose scoped contract defines stable roles
 - generated or archived documents that are not active discovery targets
+- immutable user-supplied requirement snapshots under `docs/requirements/sources/`, routed by their maintained index rather than loaded by default
 
 ## Discovery Process
 

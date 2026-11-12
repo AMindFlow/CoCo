@@ -1,165 +1,50 @@
 ---
-summary: Defines canonical Git command safety, commit messages, history edits, conflict handling, tags, staging, and push rules.
+summary: 定义 Git 命令安全、原子提交、历史保护、冲突处理和推送约束。
 read_when:
-  - staging, committing, tagging, rebasing, cherry-picking, force-pushing, or resolving Git conflicts
-  - writing commit, merge, squash, release, or hotfix messages
-  - reviewing command-level Git safety or recovery behavior
+  - 暂存、提交、推送、合并、变基或处理冲突
+  - 编写提交消息、PR 标题或操作共享 Git 元数据
 ---
 
-# Git Operating Rules
+# Git 操作规则
 
-## Boundary With VCS Workflow
+分支策略由 [GitHub Flow](vcs.md) 定义，本文件负责命令与历史安全。
 
-Use this document for command-level Git work. Use `docs/workflow/vcs.md` for branch, merge, release, hotfix, and remote-protection strategy; decide VCS strategy first when both apply.
+## 操作前检查
 
-## Commit Message Format
+确认工作区、当前分支、源和目标 SHA、共享情况及操作目的。
+只暂存已审查且属于本任务的路径；不把用户预先存在的修改当作本任务产物。
+Worktree 不隔离共享 `.git`，索引、refs 或集成分支写操作须有明确归属。
 
-Use Conventional Commits:
+## 提交
 
-```text
-<type>(<scope>): <summary>
+格式：`<type>(<scope>): <summary>`。
+类型采用 `feat`、`fix`、`docs`、`style`、`refactor`、`perf`、`test`、`build`、`ci`、`chore`、`revert`。
+消息描述实际变更，摘要简短，必要时正文说明原因、兼容性和验证。
+破坏性接口变更使用 `!` 或 `BREAKING CHANGE:`；PR 标题、最终 squash 消息同样适用。
+提交前检查 `git diff` 与 `git diff --cached`，执行范围合适的验证。
+提交按可独立审查的逻辑变化划分，代码、必要测试与文档保持一致。
+有任务清单时用 `Task: Txxx` 关联；不强迫每个文档 checkbox 产生空提交。
+任务状态只在权威清单维护，同一交付切片可合成有说明的原子提交。
 
-<body>
+## 推送与 PR
 
-<footer>
-```
+在用户授权的开发任务范围内，可普通推送自己的短分支并创建可审查 PR。
+不得直接推送 `main`（仅全新空远端的已批准初始化基线除外）、替他人批准、擅自合并、打 tag、发布或修改保护策略。
+PR 描述写清问题、结果、验证和限制；多行正文用文件或结构化参数传递。
+推送、开 PR、Review 请求和合并分别记录实际结果，不能把缓存当作远端事实。
 
-Allowed types:
+## 历史与破坏性操作
 
-- `feat`: user-visible or developer-facing feature
-- `fix`: bug fix
-- `docs`: documentation-only change
-- `style`: formatting-only change with no behavior change
-- `refactor`: code restructuring with no behavior change
-- `perf`: performance improvement
-- `test`: test-only change
-- `build`: build system or dependency change
-- `ci`: CI/CD workflow change
-- `chore`: maintenance change that does not fit other types
-- `revert`: revert a previous commit
-- `release`: release coordination commit
-- `hotfix`: production hotfix coordination commit
+- 不对 `main`、集成分支或共享分支 rebase / force-push。
+- 本地未共享分支如需 rebase，先核验工作区和来源，不丢失用户工作。
+- `push --force`、`push --force-with-lease`、`reset --hard`、`clean` 及丢弃用户改动需要明确授权。
+- 精确移植已提交修复可用 `cherry-pick -x`，避免后续重复应用。
+- 不自动删除旧 `dev`、远端分支、Worktree 或恢复记录。
 
-Rules:
+## 冲突与交付
 
-- Keep each commit atomic: one logical change per commit.
-- Choose the type from the actual change, not from the branch name.
-- Do not invent extra commit types for activities such as config correction, version bump, or changelog update; choose the closest allowed type from the content.
-- Use a stable scope from the affected module, package, or domain.
-- Write the summary in imperative mood and keep it concise.
-- Use the body when the reason, trade-off, migration, or behavior change is not obvious.
-- Mark breaking changes with `!` or a `BREAKING CHANGE:` footer.
-- Reference issues or tasks in the footer when applicable.
-- Merge commits should follow the same format when practical.
-- Squash-merge commit messages should describe the combined change, not the source branch name.
-- PR titles and squash-merge commit messages must follow the same format.
-
-## Task Commit Cadence
-
-When a feature, refactor, fix, or chore branch is governed by `tasks.md`:
-
-- Each agent completes and validates one independently verifiable `Txxx` task before starting its next task. Multiple agents may run `[P]` tasks concurrently under the rule below. Record the task-level check in the task text; a phase exit check gates phase completion only.
-- After the task-level check passes, stage the task-status update with its implementation changes and create one task commit; include `Txxx` in the commit footer, such as `Task: T001`.
-- Keep the implementation, tests, documentation, and task-status changes required by that task in the same commit.
-- `[P]` tasks may run concurrently only after dependencies are satisfied and file ownership and workspace isolation are confirmed; each task still gets its own task commit.
-- Do not combine independent tasks in one commit. If a task cannot be independently verified, split it or record a scoped exception and reason in the task text before implementation.
-- This cadence applies within the working branch; the completed branch may still be squash-merged to `dev` under `docs/workflow/vcs.md`.
-
-## Git Preflight
-
-Before changing branches or history, inspect:
-
-```bash
-git status
-git branch --show-current
-git log --graph --oneline --decorate --all -n 30
-```
-
-Before a merge, rebase, cherry-pick, reset, or force-push, identify:
-
-- current branch
-- target branch
-- source branch or source commit
-- intended operation
-- whether the operation changes history
-- whether the branch may be shared
-
-## Operations Requiring Explicit User Authorization
-
-Do not run these without explicit user authorization:
-
-```bash
-git push --force
-git push --force-with-lease
-git reset --hard
-git clean -fd
-```
-
-Also ask before overwriting, discarding, or reverting user changes.
-
-## Rebase Policy
-
-Allowed:
-
-- local, unshared `feature/*`, `refactor/*`, `fix/*`, `chore/*`, `spike/*`, or `hotfix/*` branches
-- cleaning local commits before opening a PR or MR while the branch remains unshared
-
-Forbidden:
-
-- rebasing `main`
-- rebasing `dev`
-- rebasing `release/*`
-- rebasing shared `hotfix/*`
-- rebasing any branch another developer or agent may have based work on
-
-Rebasing `main`, `dev`, or `release/*` remains forbidden even with explicit user authorization.
-
-If a branch has been pushed or might be shared, do not rebase it; clean local commits only while the branch remains unshared.
-
-## Staging And Tagging
-
-- Review `git diff` and `git diff --cached` before committing; stage only files that belong to the intended atomic change.
-- Follow `docs/workflow/vcs.md` for release tags and tag pushes.
-
-## Cherry-Pick Policy
-
-Use cherry-pick for precise patch transfer:
-
-```bash
-git cherry-pick -x <commit-hash>
-```
-
-Allowed use cases:
-
-- forwarding a stable hotfix to `dev`
-- transferring one release fix to `dev` when merging the full release branch is unsafe
-- backporting or forward-porting a precise patch between maintained versions
-
-Rules:
-
-- Prefer cherry-pick only for precise patch transfer.
-- Use `-x` on public/shared branches so the new commit records the original commit reference.
-- Do not later blindly merge the source branch if that may duplicate the cherry-picked patch.
-- If conflicts occur, stop and report the conflict instead of guessing.
-
-## Conflict Handling
-
-If a Git operation conflicts:
-
-1. Stop.
-2. Report conflicted files.
-3. Explain which operation caused the conflict.
-4. Resolve only when the intended semantics are clear from code or docs.
-5. Run relevant validation after resolution when feasible.
-
-## Completion Evidence
-
-After a Git workflow action, report:
-
-- starting branch
-- operation performed
-- source and target
-- created commit hash or cherry-picked commit when available
-- conflicts, if any
-- validation run, if any
-- final branch status
+冲突先保留状态，记录源、目标和路径。
+语义明确且在授权内的冲突由指定 Integration Owner 修复并验证；合同或归属不明时交给 Leader。
+不以机械选择 ours/theirs 掩盖冲突。
+交付报告起止分支、提交 SHA、PR、检查、冲突及保留的用户修改。
+本地提交成功不代表远端 CI 通过或已经合并。
