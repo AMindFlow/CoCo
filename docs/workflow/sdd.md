@@ -1,99 +1,63 @@
 ---
-summary: Defines the human approval, implementation verification, promotion, archival, and replacement workflow for SDD specs.
+summary: 定义精简 SDD 的需求审批、技术验证、人工验收和规范生命周期。
 read_when:
-  - creating or approving a spec
-  - starting, completing, or validating spec implementation
-  - promoting, archiving, or superseding a spec
+  - 创建或实质修改 Spec、AC、设计或执行计划
+  - 开始实现、记录技术完成或请求人工验收
+  - 提升、归档或替换已有规范
 ---
 
-# SDD Workflow
+# SDD 工作流
 
-This document is the canonical human-readable workflow for spec review, implementation state, and lifecycle classification.
+## 保留的控制
 
-## Two Independent States
+保留需求先行、可观察 AC、版本与证据关联、独立验证和人工最终验收。
+按需要创建产物，职责见 `docs/specs/AGENTS.md`，不以凑齐四个文件为目标。
+Small 或普通文档工作使用当前请求和简短执行计划，无需新建完整 Spec。
+明确要求修改的工作流，可将用户请求作为该范围的批准依据；不能借此批准后续未知产品设计。
 
-Every `spec.md` records:
+## 状态与批准
+
+每个 `spec.md` 保留：
 
 ```text
 Review: draft | approved
 Implementation: not_started | in_progress | complete | verified
 ```
 
-- `Review` answers whether the current requirement contract has human approval.
-- `Implementation` answers how far implementation against that contract has progressed.
-- Directory position answers whether the spec is provisional, normative, archived, or replaced.
+`Review` 表示当前需求、范围和 AC 是否获人类批准；`Implementation` 表示对应版本的实施进度。
+只有人类授权才能从 `draft` 进入 `approved`。
+人类提供需求基线并明确要求开展工作、且没有新增实质要求时，可记录原请求作为批准依据。
+`draft` 始终对应 `not_started`；不得实施草案中的新增要求。
+批准后的技术设计与执行计划由 Leader 在既定需求和授权内复核，不要求每个内部任务重新找人批准。
 
-## Human Gates
+| 状态 | 下一步 |
+| --- | --- |
+| `draft / not_started` | 完成需求评审；可做只读调查和隔离技术探测 |
+| `approved / not_started` | Tester 定义验证合同，Leader 复核 |
+| `approved / in_progress` | 实施、独立审查、检查与修复 |
+| `approved / complete` | 技术交付完毕，等待人工验收；返工可回 `in_progress` |
+| `approved / verified` | 人类已接受结果，不由代理自行设置 |
 
-- Only a human may change `Review` from `draft` to `approved`.
-- Implementation must not start while `Review` is `draft`.
-- An explicit instruction to implement a presented or linked spec counts as approval when the spec adds no material changes to requirements, scope, constraints, or acceptance criteria beyond that instruction.
-- Only a human may change `Implementation` from `complete` to `verified`.
-- Passing tests, independent-agent review, a commit, a merge, or deployment does not by itself satisfy either human gate.
-- When approval or verification is ambiguous, leave the state unchanged and ask for confirmation.
+测试通过、PR 合并、Leader 技术验收不能替代人工最终验收。
+批准绑定 Spec 版本或内容哈希、批准者和范围，不是 Agent 自报的 `approved: true`。
+产品可信审批机制见 [安全规则](security.md)，文档状态本身不是防伪凭证。
 
-## Implementation Flow
+## 变更与生命周期
 
-| State | Meaning | Allowed next step |
-| --- | --- | --- |
-| `draft / not_started` | Requirements are being prepared or reviewed | Human approves the current revision |
-| `approved / not_started` | Implementation may begin | Agent sets `in_progress` when work starts |
-| `approved / in_progress` | Implementation and technical validation are active | Agent sets `complete` after agreed checks pass |
-| `approved / complete` | Agent work is delivered and awaits human validation | Human verifies, or the agent sets `in_progress` when human-requested rework starts |
-| `approved / verified` | Human has accepted the implemented result | Keep as current standard or move lifecycle class |
+- 实质修改需求、AC、权限、兼容性或架构边界时，不扩大原授权；受影响部分重新提请审批。
+- 改变未验收 Spec 的验收合同时重置 `draft / not_started`，现有代码只作为基线证据。
+- 同一未验收切片优先修订原 spike；已 `verified` 的实质变化使用后继 spike。
+- `spike/`：试行或实施中的规范，默认新建位置。
+- `official/`：可重建预期行为的当前规范，需 `approved / verified` 及人工明确提升。
+- `archived/`：一次性变更的历史记录，由人工决定归档。
+- `superseded/`：被后继替代的旧标准，保留双向关联。
+- 移动整个切片目录，不复制成两个权威版本；同步路径和状态入口。
+- 历史目录只在审计、迁移、回归或明确请求时读取。
 
-While `Review` is `draft`, `Implementation` stays `not_started`; no other draft implementation combination is reachable.
+## 技术探索与交付
 
-Material changes to requirements, scope, constraints, or acceptance criteria reset an approved but unverified spike to `draft / not_started`. Existing code becomes baseline evidence for the revised spec, not proof of implementation.
-
-`verified` does not transition backward. Any later material change uses a successor spike.
-
-## Lifecycle Directories
-
-### `spike/`
-
-A provisional or trial spec. It may already affect real business behavior without being the formal standard. New specs start here unless the user explicitly requests another class.
-
-### `official/`
-
-The current normative business or system standard. It must describe intended behavior well enough to reconstruct the feature if implementation is damaged or lost. Promotion requires `approved / verified` plus explicit human direction.
-
-### `archived/`
-
-A non-normative historical record for a one-time change, such as replacing infrastructure or adding an isolated capability that does not define the continuing business flow. Archive only after it is no longer an active implementation contract and a human explicitly chooses archival.
-
-### `superseded/`
-
-A former normative standard replaced by another spec, including a successor whose requirement is to remove the old behavior. Keep predecessor and successor links so past behavior can be reconstructed. Do not use it as the current implementation contract.
-
-## Lifecycle Flow
-
-1. Create `docs/specs/spike/<feature-slice-name>/spec.md` with `draft / not_started`.
-2. Obtain human approval before implementation.
-3. Implement and technically validate; stop at `complete`.
-4. Obtain human validation before setting `verified`.
-5. Keep the verified spec in `spike/`, promote it to `official/`, or move a one-time record to `archived/` only on human direction.
-6. To change or remove an official standard, create a successor under `spike/`. After the successor is verified and promoted, move the old official directory to `superseded/` and link both specs.
-
-## Removal And Retirement
-
-- Treat removal as an intended system or contract outcome, not as the absence of requirements.
-- A removal spec defines the behavior, interface, data, or workflow that must cease; what must remain; affected consumers; migration or compatibility needs; partial-removal behavior; and recovery or rollback expectations.
-- To remove an `official/` standard, use a successor spike. Do not delete or materially rewrite the predecessor while it remains the normative reconstruction source.
-- When continued absence is the durable standard, verify and promote the successor, then move the predecessor to `superseded/` and link both directions.
-- When removal is a one-time cleanup with no continuing normative behavior, reconcile durable post-removal facts into their canonical homes and move the verified change record to `archived/` only on human direction.
-
-## Move And History Rules
-
-- Classification lives only in the directory path; do not duplicate it in spec metadata.
-- Move the whole feature-slice directory. Do not copy it across lifecycle classes.
-- Preserve the feature-slice name unless the business concept itself changed.
-- Update predecessor, successor, current-state, and project-relative links in the same change.
-- A verified spike does not become official automatically.
-- Archived and superseded specs are read only for audit, migration history, regression analysis, or explicit user requests.
-
-## Completion Language
-
-- `complete`: implementation and technical checks are finished; human verification is pending.
-- `verified`: a human explicitly accepted the implemented result.
-- Agents must state the current spec path and both states when delivering material work governed by a spec.
+只读能力调查、隔离协议握手和可丢弃 PoC 可用于消除不确定性。
+PoC 不授权写生产仓库、危险操作、改变账号或扩大凭据权限。
+未验证外部能力保留为阻塞或明确兼容模式，模拟结果不算真实验收通过。
+交付报告 Spec 路径、两个状态、批准依据、AC 覆盖和未完成事项。
+整项仍在实施时，只报告完成的切片，不把规则调整或 PoC 等同于产品完成。

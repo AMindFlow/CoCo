@@ -68,6 +68,8 @@ Do not update docs for:
 - Treat 150 lines as the soft budget for general governed Markdown documents.
 - Treat 300 lines as the soft budget for agent-facing Markdown under `docs/.agent/`.
 - These budgets are advisory; project initialization does not install automated enforcement.
+- The project documentation checker reports budget warnings without failing CI; metadata, file-link and source-integrity checks have separate failure conditions.
+- Immutable user-supplied source snapshots under `docs/requirements/sources/` are evidence exceptions; preserve bytes, route through the requirement index, and read only selected sections.
 - Split, summarize, or route detail elsewhere before crossing the applicable budget.
 
 ## Shared Human-Agent Docs

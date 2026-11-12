@@ -1,55 +1,62 @@
 ---
-summary: Describes the project's durable purpose, boundaries, domain model, technology posture, architecture, and document ownership.
+summary: 定义 CoCo 的目标、范围、领域事实、已批准技术栈和文档所有权。
 read_when:
-  - onboarding to the project or evaluating whether a request belongs to its core domain
-  - changing project purpose, scope boundaries, architecture, technology posture, or document ownership
-  - needing stable project context that should not come from current-state.md
+  - 判断需求是否属于 CoCo 的核心范围
+  - 修改项目定位、边界、技术方向或架构所有权
 ---
 
-# Project Overview
+# 项目概览
 
-## Project Card
+## 项目卡
 
-- Name: `CoCo`
-- Type: `事件驱动的多 Agent 软件交付协调工具（MCP 服务与规则、Skills 包）`
-- Description: `基于 Codex 和 DeepSeek Harness，实现协调多个 Agent 进行软件交付的事件驱动工作流；主要构建协调 MCP 服务及各工作角色的规则、Skills 包。`
-- Current status: `docs/project/current-state.md`
+- 名称：CoCo。
+- 类型：事件驱动的多 Agent 软件交付协调工具（MCP 服务与规则、Skills 包）。
+- 目标：复用 Codex、DeepSeek Harness 和 GitHub，减少中间人工协调，以持久化事件完成可验证、可恢复的软件交付。
+- 需求基线：[v1.2 索引](../requirements/README.md)；实施状态：[current-state.md](current-state.md)。
 
-## Scope Boundaries
+## 核心边界
 
-- In scope: TBD - refine the project-owned responsibilities when they become concrete.
-- Out of scope: TBD - record boundaries when exclusions become relevant.
-- External dependencies: TBD - record dependencies when they become concrete.
+包含本地非 LLM Core、多 MCP 接入、Runtime/GitHub Adapters、任务/事件/合同/恢复、CLI、项目模板与初始化 Skill。
+Leader 负责需求、设计、拆分、授权、测试复核和仲裁；Coordinator 执行确定性计划与门禁。
+一个 Core 服务多个隔离 Project / Run；Session 不跨项目复用，Worker 默认不跨 Run。
+不实现全局 Worker 池、固定 Agent 数量/项目并发配额、分布式队列或通用工作流平台。
+不自研推理 Runtime、GitHub Merge Queue、CI、聊天平台或生产部署平台。
+底层限流由背压与有限重试处理，资源互斥服务于正确性，不是配额调度。
 
-## Domain Model
+## 真相与领域
 
-- Core concepts: TBD - define durable terms as the domain model stabilizes.
-- Source of truth: TBD - define before introducing authoritative records or persistent data.
-- Review boundary: TBD - define when a workflow requires human or external approval.
+| 事实 | 权威来源 |
+| --- | --- |
+| 需求和 AC | 用户需求与已批准 Spec 版本 |
+| 工作流、事件与投递 | 产品未来的 Core SQLite |
+| 代码与有效 SHA | Git |
+| PR、CI、Review、Merge | GitHub 实时核验的记录 |
+| 恢复思路 | 与 Git/版本一致的有效 Handoff Checkpoint |
 
-## Technology Posture
+Event、Delivery 和 Attempt 分离；Runtime 接受不代表任务完成。
+状态推进依赖有效版本与外部证据，不依赖 Agent 自述或 Desktop Sidebar。
+未知执行结果先 reconcile，不能盲目启动第二个写入者。
 
-- Stack summary: `核心服务：TypeScript + Node.js 26 LTS；工程组织：pnpm workspace；MCP：官方 TypeScript SDK + Zod；存储：SQLite WAL，由常驻协调进程管理事件日志、任务状态、租约和待投递消息；规则与 Skills：Markdown/YAML；验证：Vitest + TypeScript 类型检查；运行时接入：Codex app-server 适配器与独立 DeepSeek Harness（dsh）适配器。具体依赖版本、MCP 传输方案及 dsh 接入协议在首个 SDD 中核验并锁定。`
+## 已批准技术栈
 
-Use the stack summary for initialization. When the stack becomes concrete, keep a compact table here:
+用户于初始化时明确批准：
 
-| Area | Choice | Owner Or Source |
-| --- | --- | --- |
-| Runtime and application | TBD | First accepted SDD spec or architecture decision |
-| UI or interaction surface | TBD | First accepted SDD spec or architecture decision |
-| Data and storage | TBD | First accepted SDD spec or architecture decision |
-| Automation and integrations | TBD | First accepted SDD spec or architecture decision |
-| Validation and delivery | TBD | `docs/workflow/` and accepted specs |
+| 区域 | 选择 |
+| --- | --- |
+| 核心 | TypeScript + Node.js 26 LTS |
+| 工程组织 | pnpm workspace，按真实依赖逐步拆包 |
+| MCP / 契约 | 官方 TypeScript SDK + Zod，共享协议定义 |
+| 存储 | SQLite WAL，由单 Core 管理状态、事件与投递 |
+| 规则和 Skills | Markdown / YAML |
+| 验证 | Vitest + TypeScript 类型检查；按 AC 使用协议、集成和故障注入测试 |
+| 接入 | 独立 DSH / Codex / GitHub Adapters |
 
-## Architecture Map
+具体依赖版本、SQLite 驱动、IPC 和真实 Runtime 能力在 Phase 0 及后续接受的设计中锁定。
+Leader 基础模式支持 Desktop 人工继续并通过 MCP 领事件；自动唤醒以真实能力核验为准。
 
-- System context: TBD - record external systems, major interactions, and trust boundaries when known.
-- Major building blocks: TBD - link accepted specs or architecture documents when they exist.
-- Runtime and deployment: TBD - link the owning spec when the project has a concrete runtime.
+## 文档所有权
 
-## Documentation Ownership
-
-- Changing status: `docs/project/current-state.md`.
-- Implementation contracts: `docs/specs/`.
-- Workflow rules: `docs/workflow/`.
-- Agent routing rules: `docs/.agent/conventions/`.
+[路线](roadmap.md) 管阶段目标；活动 `tasks.md` 管唯一任务进度。
+需求索引管来源与 AC 路由；Spec 管切片需求；design 管技术方案与验证合同。
+`docs/workflow/` 管重复工作约定，`docs/agents/` 管角色差异，`docs/.agent/` 管发现和执行约束。
+当前方案见 [Phase 0 设计](../specs/spike/phase-0/design.md)，不是已交付能力声明。

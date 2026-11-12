@@ -1,43 +1,35 @@
 ---
-summary: Records the project's changing baseline, active focus, open decisions, known risks, and next-read candidates.
+summary: 记录 CoCo 当前实施基线、活动切片、能力限制及下一阅读入口。
 read_when:
-  - a task depends on current project status, active focus, open decisions, or known risks
-  - updating the implemented baseline after a material project change
-  - selecting a current spec or operational context without scanning historical documents
+  - 继续本项目工作或选择当前执行切片
+  - 更新已实现基线、外部阻塞或下一阅读路径
 ---
 
-# Current State
+# 当前状态
 
-## Snapshot
+## 已确认基线
 
-- Project profile: `docs/project/overview.md`.
-- Lifecycle state: initialized from the vibe coding project template.
-- Active focus: define the first SDD feature slice before material implementation work.
+初始化模板已提交；当前正在将规则适配到 v1.2 需求，尚无可运行 Coordinator / MCP / Adapter 产品。
+已采用 GitHub Flow，保留通用规则、需求/AC 门禁、人工最终验收、文档预算、metadata 与渐进式阅读。
+角色及工作流用于当前手动协作，不表示产品自动派发、事件和权限机制已经实现。
+需求与技术栈的权威事实见 [概览](overview.md) 和 [需求索引](../requirements/README.md)。
 
-## Implemented Baseline
+## 活动入口
 
-- Root agent contract owns task classification, candidate discovery, and base completion evidence.
-- Project-specific implementation is not assumed until human-approved specs record it.
-- New specs start under `docs/specs/spike/`; agents stop at `Implementation: complete` until a human verifies the result.
-- Document growth follows the soft budgets in `docs/.agent/conventions/docs.md`; project initialization installs no repository guardrails or Git hooks.
+- 当前切片：[Phase 0 spec](../specs/spike/phase-0/spec.md)，`approved / in_progress`。
+- 唯一进度与阻塞：[tasks.md](../specs/spike/phase-0/tasks.md)。
+- 技术与验证合同：[design.md](../specs/spike/phase-0/design.md)。
+- 外部能力及证据：[PoC 矩阵](../specs/spike/phase-0/refs/poc-matrix.md)。
 
-## Open Decisions
+## 尚未证明的能力
 
-- First feature slice and acceptance criteria.
-- Component-level technology choices not settled by the approved stack summary.
-- External dependencies, domain details, architecture, and validation entry points.
+DSH 实际 Session 恢复与权限、Desktop MCP / Thread 控制、Review SHA 映射、CI / Merge Queue 及双项目恢复均需真实验证。
+帮助、独立协议握手和静态设计不等于上述能力通过。
+可信人工批准入口、同用户凭据隔离及未知外部执行结果的恢复机制尚需技术验证。
+不在这些前提未满足时启用真实高风险自动操作。
 
-## Known Risks
+## 下一步
 
-- An initialized but uncommitted scaffold may still be waiting for an approved technology stack.
-- Detailed operating boundaries may remain incomplete until accepted specs refine them.
-- Current status can become stale if accepted specs change project scope without updating this file.
-
-## Next Read Candidates
-
-- `AGENTS.md`: root runtime contract.
-- `docs/project/overview.md`: stable context when project identity, boundaries, or ownership matter.
-- Matching standard under `docs/specs/official/` or active change under `docs/specs/spike/`: only when the task or user reference selects it.
-- Routed workflow or agent convention docs: only when selected by task type, touched area, or explicit request.
-
-Do not scan all specs to find possible context; use filenames, user references, or known touched areas to select a spec.
+先完成本轮规则与草案的独立静态审查，再按任务清单推进真实 PoC 和最小闭环。
+Phase 1 正式实现前由独立 Tester 形成测试合同，Leader 复核；不从技术草案直接跳到大规模代码实现。
+远端地址和配置会变化，操作前读 Git remote 与 GitHub 实时状态；本文件不复制远端快照。

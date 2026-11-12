@@ -1,92 +1,66 @@
 ---
-summary: Defines pre-implementation validation contracts, risk-based checks, and independent-agent verification gates.
+summary: 定义按风险验证、Tester 前置合同、Leader 复核及独立审查的证据要求。
 read_when:
-  - planning or implementing a material or high-risk change
-  - changing build, configuration, dependencies, tests, deployment, or workflow behavior
-  - assigning an independent agent to plan tests, develop tests, review, or verify
-  - deciding validation scope, pass conditions, fallback, or waiver requirements
+  - 规划或实施 Material 或 High-risk 变更
+  - 修改行为、构建、依赖、测试、交付流程或验证门禁
+  - 分配测试、代码审查或最终验证职责
 ---
 
-# Validation Policy
+# 验证规则
 
-## SDD Boundary
+## 验证合同
 
-`docs/workflow/sdd.md` owns review and implementation states. Technical or independent validation supplies evidence; it does not approve a draft or set a spec to `verified`.
+正式实现前，需求与 AC 放在 `spec.md`，验证设计放在 `design.md`；无需设计文档时使用明确执行计划。
+合同说明 AC 映射、最小充分检查、Fixture、Pass/Fail Oracle、命令、证据版本、独立角色和降级路径。
+不发明测试命令；实现不存在时标记预期失败，不把缺少测试入口冒充通过。
 
-## Validation Contract
+## Tester 前置与 Leader 复核
 
-Before implementing material or high-risk work, define acceptance in `spec.md` and validation design in `design.md`. When a change legitimately needs no design artifact, keep a brief validation contract in the explicit execution plan:
+Material 产品实现由独立 Tester 从已批准需求、公开接口和基线设计测试，不先阅读实现结论。
+Tester 默认 DSH；尚未通过能力核验时可用独立 Codex 会话或满足权限合同的替代工具，并报告来源。
+独立性依据会话、预期来源、工作区和写范围，不能仅凭工具名称或供应商判断。
+Leader 复核关键 AC、异常路径、断言、Mock/Fixture、回归与 EXPECTED_RED。
+通过后才能授权 Implementer；产品未来记录 `VALIDATION_APPROVED`，当前只记录人工执行证据，不伪称 Coordinator 已实现。
+需求和权限的人工批准见 [SDD](../../workflow/sdd.md) 与 [安全规则](../../workflow/security.md)。
 
-- acceptance criteria and affected behavior
-- tests to add or change
-- deterministic commands and manual checks
-- pass conditions
-- independent-verification level
-- provider fallback or required waiver
+## 最小充分检查
 
-Normalize accepted Plan Mode validation content into `design.md` when that file exists. Do not begin parallel implementation and test development until the contract is stable enough for both agents to work from the same expected behavior.
+| 变更 | 验证 |
+| --- | --- |
+| 普通文字或机械文档修改 | 内容、链接、metadata、范围检查，无需运行时测试 |
+| 工作流或文档体系 | 规则冲突、路由、预算、审批边界及独立静态复核 |
+| 局部行为 | 针对性行为测试与必要回归 |
+| 跨模块、事件、持久化 | 契约、集成、故障注入及相关回归 |
+| 构建、依赖、CI | 类型检查、构建和适用 CI |
+| 权限、迁移、恢复、自动合并 | 越权与故障测试、人工风险复核、独立动态验证 |
 
-## Risk-Based Checks
+不为低影响可逆修改编写镜像实现的测试；没有新风险不反复扩大检查。
+规划和静态审查不是执行测试，模型“PASS”不是证据。
 
-- Documentation-only change: no runtime tests required unless docs contain executable examples.
-- Localized code change: run targeted tests for touched behavior.
-- Cross-module behavior change: run targeted tests plus relevant integration tests when available.
-- Build/config/dependency change: run lint, typecheck, build, or equivalent project checks when available.
-- Security/auth/data migration change: run relevant tests and include manual risk review notes.
-- Do not invent commands. Infer commands from project files only when safe.
-- If validation cannot run, report why.
+## 角色与工具
 
-## Independent Verification Gate
-
-- Trivial, small mechanical, and ordinary documentation work do not require an independent agent.
-- Small behavior changes may use an independent agent when uncertainty or regression risk justifies it.
-- Material behavior, build, test, deploy, and workflow changes use an independent agent by default. If no provider is available or independent verification is inapplicable, self-validate and report the reason plus residual risk.
-- High-risk work requires an independent agent. If it is unavailable or does not pass, do not claim completion unless the user explicitly accepts a waiver after reviewing the remaining risk.
-- Use a separate agent or fresh agent session from the implementer. Agent identity alone is insufficient when it shares the implementation context and conclusions.
-
-## Provider Selection
-
-- Use Claude Code as the default independent-verification provider.
-- Use OpenCode or another provider only when the user explicitly selects it.
-- Do not silently replace an explicitly selected provider when it is unavailable; apply the task-risk fallback or waiver rule and report the reason.
-- Apply the same role capability boundaries regardless of provider.
-
-## Agent Roles And Capabilities
-
-| Role | Required capabilities | Forbidden behavior |
+| 角色 | 允许 | 禁止 |
 | --- | --- | --- |
-| Test planner | Read and search the accepted spec, baseline behavior, interfaces, and existing tests | Editing files or claiming tests were executed |
-| Test developer | Read, search, edit agreed test/fixture files, and run deterministic test commands | Editing production code, changing requirements, or working in the implementer's worktree |
-| Final verifier | Read, search, and run the agreed validation commands against the integrated final state | Editing source/tests, auto-fixing failures, or changing expected results |
-| Static reviewer | Read and search code, docs, diffs, and artifacts | Claiming runtime validation without command evidence |
+| 测试规划 | 读需求、接口、基线，输出验证矩阵 | 改需求或生产代码，宣称未跑测试已执行 |
+| 测试开发 | 独立工作区内约定的测试、Fixture、CI | 改生产代码或迎合实现削弱断言 |
+| 静态审查 | 只读 Spec、diff、规则与证据 | 写代码，把阅读当作动态验证 |
+| 最终验证 | 对集成后固定 SHA 执行约定检查 | 修复源码或测试，改变预期 |
 
-- Match the provider tool allowlist to the assigned role. `Read`, `Grep`, and `Glob` alone support planning or static review, not dynamic test validation.
-- A test developer needs coding and command-execution capabilities, but only in an isolated workspace and only for the agreed test-owned paths.
-- A final verifier needs command execution, such as a constrained shell tool, but must not receive source-editing tools. Test-created caches and generated reports are allowed when the agreed commands require them.
-- Plan Mode output may define a validation strategy; it does not count as executed validation unless a command-capable agent later runs the checks.
-- If the available provider cannot satisfy the assigned capability set, treat that role as unavailable and apply the risk-level fallback or waiver rule.
+只读工具不能承担命令验证；有 shell 不等于获得任意文件或凭据权限。
+并行写入需要独立 Worktree，不能隔离时顺序工作。
+测试完整性见 `tests.md`，工作区约束见 `workspace.md`。
 
-## Parallel Test Development
+## 独立验证与降级
 
-- Derive the initial test plan from the accepted spec, existing behavior, and public interfaces before reading the implementation patch.
-- Give the test developer ownership of explicitly named tests, fixtures, and validation artifacts only.
-- Follow `workspace.md` for isolated worktrees and integration ownership.
-- If safe isolation is unavailable, do not let agents write concurrently; use sequential independent test design and verification.
-- Do not weaken independently authored tests merely to make the implementation pass; follow `tests.md` for test-integrity rules.
+- 普通文档与 Small mechanical 无需额外 Agent；Material 工作流修改使用独立静态审查。
+- Material 产品行为默认独立测试与最终核验；不可用时记录替代检查、能力限制和残余风险。
+- High-risk 必须独立验证，不可用时需人类审阅风险后明确豁免，不能自行声称完成。
+- 人类明确指定供应商时不得静默替换；否则按当前能力选择并报告实际来源。
+- 审查者用新会话，只接收需求与原始产物，不接收实现者的预设结论。
+- PR 审查优先 Codex Cloud Review，当前 SHA 和完成状态均须有真实证据。
 
-## Final Verification
+## 最终证据
 
-- Verify the integrated final state, not an implementation branch or stale patch.
-- Run the deterministic commands defined before implementation and inspect the final diff against the acceptance criteria.
-- Do not let the final verifier repair failures. Return findings to the implementer, then use a fresh verification run after fixes.
-- A bare `PASS` statement is not evidence. Record commands or checks, exit status or observable result, acceptance-criteria coverage, and anything not verified.
-- Prefer least-privilege tools and an isolated workspace when invoking a terminal agent such as Claude Code.
-- Give the verifier task requirements and raw artifacts without leaking the implementer's conclusions or expected findings.
-
-## Completion Evidence Additions
-
-When this file applies, add:
-
-- validation contract, checks, results, and skipped checks
-- verifier provider, session boundary, capability, and acceptance coverage
-- fallback or waiver, remaining validation risk, and human-verification state
+报告检查或命令、退出状态或观察结果、AC 覆盖、实际 SHA / 合同版本及未执行范围。
+报告独立验证会话、能力限制、替代原因与人工待验收项。
+最终验证发现问题交回责任实现者，修复后重验受影响范围。
