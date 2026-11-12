@@ -13,6 +13,7 @@ read_when:
 | --- | --- | --- |
 | 稳定项目事实 | [项目概览](project/overview.md) | 目标、边界、技术栈和所有权 |
 | 当前进度与下一步 | [当前状态](project/current-state.md) | 活动切片、阻塞、下一阅读入口 |
+| 新会话继续工作 | [会话交接](project/next-session.md) | 启动基线、授权边界、立即任务与检查 |
 | 阶段规划 | [实施路线](project/roadmap.md) | 阶段目标和依赖，不复制任务进度 |
 | 需求追溯 | [需求索引](requirements/README.md) | v1.2 章节、原 AC 和适配边界 |
 | 角色任务 | [角色入口](agents/INDEX.md) | 只加载分配角色的规则 |

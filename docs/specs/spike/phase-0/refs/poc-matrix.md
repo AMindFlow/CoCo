@@ -31,10 +31,13 @@ read_when:
 | DSH Session 独占 | 未测 | 同 Session 跨进程互斥、旧实例停机与租约保护仍需验证 |
 | Desktop MCP / Leader | 未测 | 双 Client 实连、断连后台仍运行、人工继续领取正确 Run 事件 |
 | 自动恢复 Desktop Thread | 未测、可选 | 单独验证归属和可控制范围；基础流程保留人工兼容模式 |
-| 组织仓库前提 | API 实测：组织公开仓库，Rulesets 可读且数量 0；空远端已恢复原初始化 main 基线 | 能力前提可用不等于已启用保护或 Merge Queue；实际 PR/CI 记录在远端 |
+| GitHub 保护与队列配置 | API 实测：main Ruleset Active，无 bypass，强制 PR/1 Approval/Squash/队列，Required Check 绑定 docs-integrity/GitHub Actions | 配置生效不等于真实队列/审批闭环已验证；需核验独立审批身份 |
+| Codex / GitHub 连接 | 用户确认关联；GitHub Connector 已实测读取本仓库和组织安装记录 | Automatic review 触发、完成证据及当前 SHA 关联仍需实际 PR 核验 |
 | Review / SHA | 未测 | 受控 PR 实触发，当前 SHA 与完成证据；无评论不得判 PASS |
 | CI / Merge Queue | 未测 | 实际 PR 与 merge_group SHA 检查、失败移队、远端合并事实 |
 | 多项目与崩溃恢复 | 未测，依赖最小 Core PoC | 双 Project/Run 标记隔离、超时已启动、丢 Session、Core 重启无重复副作用 |
+
+GitHub 设置快照：[github-setup.json](../artifacts/github-setup.json)，核验日为 2026-11-12；操作前仍需重查远端。
 
 ## 可复现范围
 
