@@ -74,14 +74,8 @@ GitHub Connector 已能读取本仓库和组织安装记录，用户已确认在
 
 用户已授权复用现有 DSH 配置做受控 PoC，明确要求配置不硬编码、与凭据解耦。
 先按 [DSH 接入合同](../specs/spike/phase-0/refs/dsh-binding.md) 发现实际安装与本机绑定，不向项目写入安装路径、私有模型或端点。
-上轮使用隔离 DSH_HOME / 工作区，外部 overlay 引用已有 credential store；未把凭据值复制进任务、配置副本或发布证据。
-实际 DSH 版本为 `0.2.2-rc.1`，Codex CLI 为 `0.166.0`；这是核验版本，不是无需复核的永久默认。
-
-已经有独立动态证据：创建成功、无 nonce 提示的同 Session 上下文恢复、跨 cwd 原生拒绝。
-native write 在 read-only 下拒绝，但 native read 能读取工作区外 sentinel，不能作为凭据或跨项目的强读取隔离。
-SIGTERM 后进程可能退出 0 却没有 final：结果为 unknown，不判成功或原生取消，不盲目重派冲突写入者。
-生产 resolver、配置替换/无效引用、原生取消、远端推理取消和 Handoff 重建仍未证明。
-原认证与用户 patch 的内容/mtime 未变；原 Desktop 派生配置内容未变但 mtime 变化未归因，完整范围以证据为准。
+具体版本、实测结果、未验证项及配置完整性证据只在 [PoC 矩阵](../specs/spike/phase-0/refs/poc-matrix.md) 和上述接入合同维护。
+继续前按矩阵选择尚未证明的能力；读取隔离和未知终止结果必须遵守接入合同的安全限制，不能凭退出码或 preset 名称推定安全。
 
 原始日志、探测脚本和运行目录只在旧会话临时区，不是可靠持久依赖；新会话按合同重建 fixture，不依赖旧 Agent 或 Session ID。
 发布证据只使用白名单摘要；不要输出完整配置、认证摘要、原始错误、final text 或本机路径。
