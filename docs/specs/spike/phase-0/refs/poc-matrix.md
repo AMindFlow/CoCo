@@ -29,7 +29,8 @@ read_when:
 | DSH 宿主进程终止 | 独立探测：turn_start 后 SIGTERM，退出 0、进程已回收，但无 final | 结果 unknown；不证明原生 cancel、远端推理已停或可安全重派 |
 | DSH 配置与认证分层 | 本机绑定和 overlay 引用现有 store；用户 patch 与认证内容/mtime 未变，全部 5 个源文件字节未变 | 原 Desktop 派生配置 mtime 有变化，来源未归因；无原始凭据副本，生产 resolver 未实现 |
 | DSH Session 独占 | 未测 | 同 Session 跨进程互斥、旧实例停机与租约保护仍需验证 |
-| Desktop MCP / Leader | 未测 | 双 Client 实连、断连后台仍运行、人工继续领取正确 Run 事件 |
+| MCP SDK 双 Client | 隔离协议实测 + 受控模拟：两个真实 SDK stdio Client 访问同一后台；独立会话在固定源码提交复跑 8 个行为测试通过 | 合成操作和事件，不是生产 Core；仅覆盖 T006-v1 V1～V4 |
+| Desktop MCP / Leader | 未测 | SDK 结果不能替代真实 Desktop Thread 人工继续领取正确 Run 事件；T006 不勾选 |
 | 自动恢复 Desktop Thread | 未测、可选 | 单独验证归属和可控制范围；基础流程保留人工兼容模式 |
 | 组织仓库前提 | API 实测：组织公开仓库，Rulesets 可读且数量 0；空远端已恢复原初始化 main 基线 | 能力前提可用不等于已启用保护或 Merge Queue；实际 PR/CI 记录在远端 |
 | Review / SHA | 未测 | 受控 PR 实触发，当前 SHA 与完成证据；无评论不得判 PASS |
@@ -52,6 +53,12 @@ DSH 先以不存在 ID 验证拒绝，再在空工作区提交“不要用工具
 独立权限证据逐一关联 native tool_call/result，不采用模型对自己权限的自述。
 原始错误和 final text 含本机路径/Session ID，只留私有目录；结构化白名单记录：[existing-config-probes.json](../artifacts/existing-config-probes.json)。
 配置合同与安全限制见 [dsh-binding.md](dsh-binding.md)，不把本轮接入合同当作已实现的生产 Adapter。
+
+第三批 T006 使用 [独立验证合同](t006-mcp-poc.md)；Node `26.13.0`、官方 MCP Server/Client SDK `2.4.0`。
+独立 Tester 只依据公开合同编写 8 个用例；本轮执行实际子进程与 Unix socket，无模型、凭据或 Desktop 配置变更。
+默认沙箱禁止 socket 监听，获准在私有临时 fixture 运行后完成行为检查；原失败不作为功能失败或通过依据。
+类型检查与行为测试退出 0；来源哈希、命令及未验证项见 [mcp-client-probes.json](../artifacts/mcp-client-probes.json)。
+新会话 `t006_final_verification` 对 `04458fd` 做独立只读审查及动态复验，无需修复的有效发现；V5/V6 未执行，不作为 Desktop 通过证据。
 
 ## 后续真实验收 Oracle
 

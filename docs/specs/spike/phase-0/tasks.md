@@ -2,7 +2,7 @@
 
 ## 状态
 
-- Active tasks: T005
+- Active tasks: T006；T005 剩余能力按矩阵保留
 - Updated: 2026-11-12
 - Blockers: DSH 原生取消、并发/preset 与强读取隔离尚未证明；Desktop、Review、CI、Merge Queue 等仍待动态验收；详见 PoC 矩阵。
 - 任务 checkbox 是本切片唯一进度清单，不在 roadmap 或 current-state 复制。
@@ -45,3 +45,10 @@ T005 以后涉及真实执行和写入时，各自先固定 Fixture、权限、�
 完整通过范围、失败与未证项只在 [PoC 矩阵](refs/poc-matrix.md) 与关联结构化证据维护，T005 不提前勾选。
 新增 R-006/AC-007 来自用户本轮明确要求；接入合同已形成，生产 Adapter 尚未实现，不将合同视为已实现功能。
 本轮文档检查为 43 Markdown、0 错误、0 预算提示；`dsh_poc_plan` 只读复核后，修正了 T005 对授权配置读取的措辞及完整性检查范围。
+
+## T006 接入探测
+
+独立 Tester `t006_validation_plan` 定义 [T006-v1 合同](refs/t006-mcp-poc.md)，Leader 复核后实施隔离 PoC；测试由该会话在单独临时工作区编写，不读取实现。
+代码与测试位于 `spikes/mcp-client-poc`，实际结果与层级只在 [PoC 矩阵](refs/poc-matrix.md) 及其结构化证据维护。
+新会话 `t006_final_verification` 对固定提交完成独立只读审查与动态复验；实际范围与限制见上述证据。
+下一步准备真实 Desktop 的临时 MCP 接入与目标 Thread 领取条件；未验证 V5 前不勾选 T006，也不推进 Phase 1 生产实现。

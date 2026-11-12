@@ -1,0 +1,103 @@
+{
+  "date": "2026-11-12",
+  "contract": "T006-v1",
+  "requirements": [
+    "R-004",
+    "AC-004"
+  ],
+  "level": [
+    "isolated_protocol_execution",
+    "controlled_synthetic_events"
+  ],
+  "runtime": {
+    "node": "26.13.0",
+    "mcp_server": "2.4.0",
+    "mcp_client": "2.4.0",
+    "vitest": "5.1.0"
+  },
+  "test_author": {
+    "session": "t006_validation_plan",
+    "workspace": "separate temporary directory",
+    "inputs": "approved requirements and public T006-v1 contract; no implementation reads"
+  },
+  "checks": [
+    {
+      "command": "pnpm --dir spikes/mcp-client-poc check",
+      "exit_code": 0
+    },
+    {
+      "command": "pnpm --dir spikes/mcp-client-poc test",
+      "exit_code": 0,
+      "passed": 8,
+      "failed": 0
+    }
+  ],
+  "execution_note": "Invoked local pnpm CLI through Node 26; the bundled pnpm launcher itself uses Node 24. Installation used --ignore-scripts. Initial socket listen was denied by host sandbox; behavior checks ran with granted local socket capability.",
+  "covered": [
+    "two real SDK stdio clients and separate ingress processes share one backend instance",
+    "full Project/Run/Leader fixture binding, including identical native thread strings",
+    "unknown token, unauthorized Run, inconsistent scope and identity override rejection",
+    "cross-event and mixed-batch acknowledgement rejection before any mutation",
+    "non-consuming reads, idempotent acknowledgement, EOF and abrupt ingress termination",
+    "accepted synthetic work completes and persists its event while all clients are offline",
+    "fresh connection observes same backend and original event identity",
+    "bounded backend-unavailable error without replacement backend"
+  ],
+  "independent_final_verification": {
+    "status": "passed_for_V1_to_V4_only",
+    "session": "t006_final_verification",
+    "source_commit": "04458fd7e9d33500361c1365a23af81fa3dbcdfb",
+    "scope": "read-only review of all 12 changed files; dynamic rerun with fresh private fixtures; no source or assertion changes",
+    "checks": [
+      {
+        "command": "node spikes/mcp-client-poc/node_modules/typescript/bin/tsc --project spikes/mcp-client-poc/tsconfig.json --noEmit",
+        "exit_code": 0
+      },
+      {
+        "cwd": "spikes/mcp-client-poc",
+        "command": "node node_modules/vitest/vitest.mjs run",
+        "exit_code": 0,
+        "passed": 8,
+        "failed": 0
+      },
+      {
+        "command": "node scripts/check-docs.mjs",
+        "exit_code": 0,
+        "markdown_files": 44,
+        "errors": 0,
+        "budget_warnings": 0
+      },
+      {
+        "command": "git diff --check 55a3901848850b1e47598ace74015ca759f7afae 04458fd7e9d33500361c1365a23af81fa3dbcdfb",
+        "exit_code": 0
+      },
+      {
+        "check": "source SHA-256 matches",
+        "matched": 7,
+        "exit_code": 0
+      }
+    ],
+    "not_executed": [
+      "actual Desktop V5",
+      "optional automatic wake-up V6",
+      "clean dependency installation",
+      "production runtime and crash recovery"
+    ]
+  },
+  "not_verified": [
+    "actual Desktop MCP connection and correct Thread manual continuation",
+    "automatic Desktop Thread wake-up",
+    "production Core, OS credential isolation, Runtime Session scheduling",
+    "Core crash recovery and unknown external execution results",
+    "complete product AC-03, AC-04, AC-13 or AC-21"
+  ],
+  "source_sha256": {
+    "spikes/mcp-client-poc/backend.ts": "ca64994b7faad912f2056680c0c6e99e8a0ea26d339be59d0c42ea5e3fa9deec",
+    "spikes/mcp-client-poc/contract.ts": "03f6601244b166812763a1f4f97aab96dc0221595f1fa2524f5f7e9f689c449c",
+    "spikes/mcp-client-poc/stdio.ts": "9afe9e1a25b271154632ca4865d45af7daac5fd647ce180af93e15501bc760a5",
+    "spikes/mcp-client-poc/poc.test.ts": "cce9905af9fae9735ce42211c992be10998143c6b5c97b534563ef0a45c90da4",
+    "spikes/mcp-client-poc/package.json": "ffba7ab53974b026e7266361192f91d2d665be2ab8b8874ce238198b8b8bcadf",
+    "spikes/mcp-client-poc/pnpm-lock.yaml": "24a00656c3ce47f809e6a5ed2512fef585c6e64b9ef96988ffcf84e7ec06ab69",
+    "spikes/mcp-client-poc/tsconfig.json": "b813b7e98600680e848020948330a2091d0f14c5a211ff6001cb8a470a26e5f9"
+  }
+}

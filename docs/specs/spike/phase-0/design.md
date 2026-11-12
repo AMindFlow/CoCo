@@ -63,6 +63,7 @@ GitHub Adapter 以 repository ID、PR、当前 Head SHA、外部事件 ID 关联
 CI 使用只读权限、固定 checkout 提交、不保留凭据，响应 pull_request / merge_group；远端实际通过另行核验，不作为产品 CI 验收。
 CLI 版本与 `--help` 为只读接口证据；握手仅使用隔离配置、无任务生成和无真实仓库写入。
 动态 PoC 明确预期：真实完成事件/错误、正确退出码、同目录恢复与越权拒绝、同 Session 不重叠。
+T006 接入探测按 [独立验证合同](refs/t006-mcp-poc.md) 分离 SDK 双 Client、合成后台事件与真实 Desktop 领取。
 测试代码和故障注入必须在生产实现前由 Tester 形成独立合同，再由 Leader 复核；本轮文档检查不冒充该门禁。
 
 ## 独立验证
