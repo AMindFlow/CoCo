@@ -1,0 +1,254 @@
+{
+  "observedOn": "2026-11-12",
+  "inputCommit": "c073285f4e7311e85317426096b379afabe3009a",
+  "runtimeVersion": "0.2.2-rc.1",
+  "userAuthorization": "Use existing configuration; do not hardcode configuration; decouple credentials.",
+  "scope": "Isolated runtime homes and workspaces; existing credential store referenced by DSH; no credential values copied into launch config, prompt or committed evidence.",
+  "sourceIntegrity": {
+    "fileCount": 5,
+    "bytesUnchanged": true,
+    "mtimeUnchanged": false,
+    "credentialStoreBytesAndMtimeUnchanged": true,
+    "userPatchBytesAndMtimeUnchanged": true,
+    "derivedDesktopConfigBytesUnchanged": true,
+    "derivedDesktopConfigMtimeChanged": true,
+    "derivedDesktopConfigWriteAttribution": "unknown; concurrent Desktop regeneration is possible, but not established"
+  },
+  "primary": {
+    "create": {
+      "case": "create",
+      "exitCode": 0,
+      "timedOut": false,
+      "durationSeconds": 10.92,
+      "sessionIdPresent": true,
+      "sameSession": true,
+      "eventTypes": [
+        "final",
+        "session",
+        "status",
+        "text",
+        "thinking"
+      ],
+      "finalReason": "completed",
+      "errorCode": null,
+      "markerMatched": true,
+      "nonJsonLines": 0,
+      "toolCalls": 0,
+      "markerExactMatch": true,
+      "newPromptContainsOldMarker": true
+    },
+    "resume": {
+      "case": "resume",
+      "exitCode": 0,
+      "timedOut": false,
+      "durationSeconds": 21.01,
+      "sessionIdPresent": true,
+      "sameSession": true,
+      "eventTypes": [
+        "final",
+        "session",
+        "status",
+        "text",
+        "thinking"
+      ],
+      "finalReason": "completed",
+      "errorCode": null,
+      "markerMatched": true,
+      "nonJsonLines": 0,
+      "toolCalls": 0,
+      "markerExactMatch": true,
+      "newPromptContainsOldMarker": false
+    },
+    "wrong-cwd": {
+      "case": "wrong-cwd",
+      "exitCode": 1,
+      "timedOut": false,
+      "durationSeconds": 2.18,
+      "sessionIdPresent": false,
+      "sameSession": false,
+      "eventTypes": [
+        "error"
+      ],
+      "finalReason": null,
+      "errorCode": null,
+      "markerMatched": false,
+      "nonJsonLines": 0,
+      "toolCalls": 0,
+      "cwdMismatchRejected": true,
+      "modelTurnStarted": false
+    },
+    "permissions": {
+      "case": "read-only-permissions",
+      "exitCode": 0,
+      "timedOut": false,
+      "durationSeconds": 48.93,
+      "finalReason": "completed",
+      "fixtureBytesUnchanged": {
+        "inside": true,
+        "outside": true
+      },
+      "toolCallCount": 4,
+      "nativeResults": [
+        {
+          "tool": "read",
+          "target": "inside",
+          "status": "completed",
+          "errorCode": null
+        },
+        {
+          "tool": "read",
+          "target": "outside",
+          "status": "completed",
+          "errorCode": null
+        },
+        {
+          "tool": "write",
+          "target": "inside",
+          "status": "error",
+          "errorCode": "FS_SANDBOX_DENIED"
+        },
+        {
+          "tool": "write",
+          "target": "outside",
+          "status": "error",
+          "errorCode": "FS_SANDBOX_DENIED"
+        }
+      ]
+    }
+  },
+  "independent": {
+    "create": {
+      "case": "create",
+      "exitCode": 0,
+      "timedOut": false,
+      "durationSeconds": 13.52,
+      "sessionIdPresent": true,
+      "sameSession": true,
+      "eventTypes": [
+        "final",
+        "session",
+        "status",
+        "text",
+        "thinking"
+      ],
+      "finalReason": "completed",
+      "errorCode": null,
+      "markerMatched": true,
+      "nonJsonLines": 0,
+      "toolCalls": 0,
+      "markerExactMatch": true,
+      "newPromptContainsOldMarker": true
+    },
+    "resume": {
+      "case": "resume",
+      "exitCode": 0,
+      "timedOut": false,
+      "durationSeconds": 5.52,
+      "sessionIdPresent": true,
+      "sameSession": true,
+      "eventTypes": [
+        "final",
+        "session",
+        "status",
+        "text",
+        "thinking"
+      ],
+      "finalReason": "completed",
+      "errorCode": null,
+      "markerMatched": true,
+      "nonJsonLines": 0,
+      "toolCalls": 0,
+      "markerExactMatch": true,
+      "newPromptContainsOldMarker": false
+    },
+    "wrong-cwd": {
+      "case": "wrong-cwd",
+      "exitCode": 1,
+      "timedOut": false,
+      "durationSeconds": 2.92,
+      "sessionIdPresent": false,
+      "sameSession": false,
+      "eventTypes": [
+        "error"
+      ],
+      "finalReason": null,
+      "errorCode": null,
+      "markerMatched": false,
+      "nonJsonLines": 0,
+      "toolCalls": 0,
+      "cwdMismatchRejected": true,
+      "modelTurnStarted": false
+    },
+    "permissions": {
+      "case": "read-only-permissions",
+      "exitCode": 0,
+      "timedOut": false,
+      "durationSeconds": 19.19,
+      "finalReason": "completed",
+      "fixtureBytesUnchanged": {
+        "inside": true,
+        "outside": true
+      },
+      "toolCallCount": 4,
+      "nativeResults": [
+        {
+          "tool": "read",
+          "target": "inside",
+          "status": "completed",
+          "errorCode": null
+        },
+        {
+          "tool": "read",
+          "target": "outside",
+          "status": "completed",
+          "errorCode": null
+        },
+        {
+          "tool": "write",
+          "target": "inside",
+          "status": "error",
+          "errorCode": "FS_SANDBOX_DENIED"
+        },
+        {
+          "tool": "write",
+          "target": "outside",
+          "status": "error",
+          "errorCode": "FS_SANDBOX_DENIED"
+        }
+      ]
+    },
+    "hostTermination": {
+      "case": "parent-process-termination",
+      "observedTurnStart": true,
+      "sentSIGTERM": true,
+      "sentSIGKILL": false,
+      "exitCode": 0,
+      "processReaped": true,
+      "timedOutWaitingTurnStart": false,
+      "durationSeconds": 3.91,
+      "finalReceived": false,
+      "finalReason": null,
+      "toolCalls": 0,
+      "nonJsonLines": 0,
+      "resultUnknown": true
+    }
+  },
+  "redactions": [
+    "installation and private endpoint/model settings",
+    "local filesystem paths",
+    "session and call IDs",
+    "raw final text/tool output",
+    "credential content and credential digests"
+  ],
+  "notVerified": [
+    "production configuration resolver or fallback behavior",
+    "OAuth refresh or all authentication backends",
+    "native cancellation or remote inference termination",
+    "same-session cross-process exclusivity",
+    "permission/preset switching on resume",
+    "strong read isolation",
+    "Core multi-project isolation or crash recovery"
+  ],
+  "credentialIsolation": "read-only writes denied; out-of-workspace reads allowed; do not treat configuration/credential separation as a secret-read boundary",
+  "independentInitialTransportFailure": "Known terminal TRANSPORT error in restricted network; new authorized elevated create succeeded, without retrying an unknown result."
+}

@@ -51,7 +51,9 @@ Outbox 提供本地原子意图，不能保证跨 SQLite、Runtime、GitHub 严�
 | Recovery | prepare、validate、commit checkpoint、rebuild | Git 与 Handoff 对应、完整性、恢复输入和隔离范围 |
 
 能力协商分别记录 Session 恢复、指定 cwd、权限、JSON、取消、状态查询；缺失能力不能用空成功补齐。
+Runtime 配置、模型路由与认证引用分层见 [接入合同](dsh-binding.md)，不将本次操作者的私有设置写成产品常量。
 DSH Headless 无法可靠查询未知启动时，不直接重启第二个写入者。
+进程退出码 0 且缺少 final 仍为结果未知；不能只看退出码判定完成或已取消。
 Review 标准状态只在真实完成证据可解释时产生 PASS，否则保持 INCONCLUSIVE / UNAVAILABLE。
 
 ## MCP / IPC 候选边界

@@ -41,6 +41,7 @@ Checkpoint 只有在 Git SHA、Handoff 和状态提交协议校验后有效，�
 ## Runtime 与 GitHub
 
 DSH 默认承担执行角色，先用隔离 DSH_HOME 做帮助和错误探测；真实模型、恢复与沙箱分别验证。
+现有认证接入按 [DSH 配置与凭据合同](refs/dsh-binding.md) 分层，配置/认证引用由本机绑定注入，不硬编码实际路由或密钥。
 Codex 先验证独立 app-server 的协议握手，不能据此承诺 Desktop Thread 接管或自动唤醒。
 Leader 基础模式是人工继续后经 MCP 领取持久化事件，自动恢复作为能力协商结果。
 GitHub Adapter 以 repository ID、PR、当前 Head SHA、外部事件 ID 关联证据；没有 Review 评论不推出 PASS。
@@ -56,6 +57,7 @@ GitHub Adapter 以 repository ID、PR、当前 Head SHA、外部事件 ID 关联
 | AC-004 | 各能力分层记录；握手只判协议响应，不判 Session 或模型成功 | 具体 Oracle 见 PoC 矩阵 |
 | AC-005 | 对照原文第4～6、15～19、23章审查隔离和恢复边界 | 草案静态审查，不算生产验收 |
 | AC-006 | 新会话 Reviewer 只读独立复核，不修改产物；处理阻塞发现 | 记录会话、范围与未测内容 |
+| AC-007 | 外部配置引用复用认证、源文件未变、发布证据白名单 | 独立 DSH 实测与接入合同静态审查；不替代生产 resolver 测试 |
 
 静态命令：`node scripts/check-docs.mjs`、`git diff --check`、暂存后 `git diff --cached --check`；标准库脚本检查 metadata、文件链接和来源哈希，预算只警告。
 CI 使用只读权限、固定 checkout 提交、不保留凭据，响应 pull_request / merge_group；远端实际通过另行核验，不作为产品 CI 验收。
@@ -71,6 +73,6 @@ CLI 版本与 `--help` 为只读接口证据；握手仅使用隔离配置、无
 
 ## 尚未定案
 
-DSH Headless 真实认证与权限约束；人类批准如何从 Agent 不可伪造的入口提交；Desktop Thread 可控制范围。
+DSH 原生取消、并发互斥、preset/权限切换恢复与强读取隔离；人类批准如何从 Agent 不可伪造的入口提交；Desktop Thread 可控制范围。
 Codex Review 的真实完成格式和 SHA 关联；Merge Queue / merge_group 的仓库级配置及端到端行为。
 依赖版本、生产 SQLite 驱动、迁移方式和 IPC 协议在能力证据充分后锁定。

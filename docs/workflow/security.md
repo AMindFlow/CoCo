@@ -13,6 +13,7 @@ read_when:
 共享 OS 用户及凭据时，Agent 可能通过 shell 绕过工具层；不承诺强进程隔离。
 真实隔离需 Runtime 沙箱、文件系统权限、凭据分离及 GitHub 服务端规则共同支持。
 实际核验结果统一放在 [PoC 矩阵](../specs/spike/phase-0/refs/poc-matrix.md)，不在多份文档复制状态。
+DSH 配置与认证分层要求见 [接入合同](../specs/spike/phase-0/refs/dsh-binding.md)；解耦不等于同用户下的秘密读取隔离。
 
 ## 人工批准来源
 
