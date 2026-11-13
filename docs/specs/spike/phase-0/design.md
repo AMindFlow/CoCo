@@ -4,7 +4,7 @@
 
 - Requirements: [spec.md](spec.md)
 - Planning source: direct
-- Updated: 2026-11-12
+- Updated: 2026-11-13
 - 技术草案：Leader 候选方案，未声明实现或真实 Runtime 能力；新增权限边界在实施前需单独批准。
 
 ## 规则适配
@@ -63,6 +63,7 @@ GitHub Adapter 以 repository ID、PR、当前 Head SHA、外部事件 ID 关联
 CI 使用只读权限、固定 checkout 提交、不保留凭据，响应 pull_request / merge_group；远端实际通过另行核验，不作为产品 CI 验收。
 CLI 版本与 `--help` 为只读接口证据；握手仅使用隔离配置、无任务生成和无真实仓库写入。
 动态 PoC 明确预期：真实完成事件/错误、正确退出码、同目录恢复与越权拒绝、同 Session 不重叠。
+T007 的当前 SHA 证据分类按 [只读实验合同](refs/t007-evidence-poc.md) 执行；不据此授权审批、队列或合并。
 测试代码和故障注入必须在生产实现前由 Tester 形成独立合同，再由 Leader 复核；本轮文档检查不冒充该门禁。
 
 ## 独立验证

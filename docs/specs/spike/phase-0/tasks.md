@@ -2,8 +2,8 @@
 
 ## 状态
 
-- Active tasks: T005
-- Updated: 2026-11-12
+- Active tasks: T007 只读证据分类；T005/T006 其余项按矩阵保留
+- Updated: 2026-11-13
 - Blockers: DSH 原生取消、并发/preset 与强读取隔离尚未证明；Desktop、Review、CI、Merge Queue 等仍待动态验收；详见 PoC 矩阵。
 - 任务 checkbox 是本切片唯一进度清单，不在 roadmap 或 current-state 复制。
 
@@ -45,3 +45,11 @@ T005 以后涉及真实执行和写入时，各自先固定 Fixture、权限、�
 完整通过范围、失败与未证项只在 [PoC 矩阵](refs/poc-matrix.md) 与关联结构化证据维护，T005 不提前勾选。
 新增 R-006/AC-007 来自用户本轮明确要求；接入合同已形成，生产 Adapter 尚未实现，不将合同视为已实现功能。
 本轮文档检查为 43 Markdown、0 错误、0 预算提示；`dsh_poc_plan` 只读复核后，修正了 T005 对授权配置读取的措辞及完整性检查范围。
+
+## T007 只读证据分类
+
+独立 Tester `t007_validation_plan` 从需求定义 [T007-readonly-v1](refs/t007-evidence-poc.md)，Leader 复核后实施。
+测试先在独立临时工作区编写，缺模块的 EXPECTED_RED 为 ERR_MODULE_NOT_FOUND；实现不读取凭据或调用网络。
+分类器位于 `spikes/github-evidence-poc`；当前 PR、Ruleset 与 Check Run 通过只读工具采集，结果与限制只在 [PoC 矩阵](refs/poc-matrix.md) 及其证据维护。
+新会话 `t007_final_verification` 完成固定源码的独立审查与复验；发现的两项误判均已修复并通过原反例，版本和命令见矩阵关联证据。
+真实新 SHA 触发、正式 Approval、merge_group 与远端合并仍待授权和验证，不勾选 T007。
