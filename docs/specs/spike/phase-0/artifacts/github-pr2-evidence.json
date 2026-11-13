@@ -1,0 +1,127 @@
+{
+  "policy": {
+    "repository_id": 1454898477,
+    "repository_full_name": "AMindFlow/CoCo",
+    "pr_number": 2,
+    "head_repository_id": 1454898477,
+    "head_sha": "c6e2f3da085b94030be45bb3a07aca4c70dcdb71",
+    "reviewer": {
+      "id": 199175422,
+      "login": "chatgpt-codex-connector[bot]",
+      "type": "Bot"
+    },
+    "required_checks": [
+      {
+        "name": "docs-integrity",
+        "app_id": 15368
+      }
+    ]
+  },
+  "snapshot": {
+    "captured_at": "2026-11-12T23:44:39.413Z",
+    "pr_before": {
+      "number": 2,
+      "base": {
+        "repo": {
+          "id": 1454898477,
+          "full_name": "AMindFlow/CoCo"
+        }
+      },
+      "head": {
+        "repo": {
+          "id": 1454898477
+        },
+        "sha": "c6e2f3da085b94030be45bb3a07aca4c70dcdb71"
+      }
+    },
+    "pr_after": {
+      "number": 2,
+      "base": {
+        "repo": {
+          "id": 1454898477,
+          "full_name": "AMindFlow/CoCo"
+        }
+      },
+      "head": {
+        "repo": {
+          "id": 1454898477
+        },
+        "sha": "c6e2f3da085b94030be45bb3a07aca4c70dcdb71"
+      }
+    },
+    "comments": {
+      "source": {
+        "repository_id": 1454898477,
+        "pr_number": 2
+      },
+      "complete": true,
+      "error": null,
+      "items": [
+        {
+          "id": 6819254013,
+          "html_url": "https://github.com/AMindFlow/CoCo/pull/2#issuecomment-6819254013",
+          "updated_at": "2026-11-12T14:23:33Z",
+          "user": {
+            "id": 199175422,
+            "login": "chatgpt-codex-connector[bot]",
+            "type": "Bot"
+          },
+          "body": "<!-- codex-pull-request-review-summary -->\n<!-- codex-review-state:v1 {\"code_review\":{\"commit_sha\":\"c6e2f3da085b94030be45bb3a07aca4c70dcdb71\",\"has_any_findings\":false,\"has_unresolved_findings\":false,\"status\":\"completed\"},\"security_review\":{\"commit_sha\":null,\"has_any_findings\":null,\"has_unresolved_findings\":null,\"status\":null}} -->"
+        }
+      ]
+    },
+    "checks": {
+      "source": {
+        "repository_id": 1454898477,
+        "head_sha": "c6e2f3da085b94030be45bb3a07aca4c70dcdb71"
+      },
+      "complete": true,
+      "error": null,
+      "items": [
+        {
+          "id": 131220983435,
+          "name": "docs-integrity",
+          "head_sha": "c6e2f3da085b94030be45bb3a07aca4c70dcdb71",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-12T13:40:52Z",
+          "completed_at": "2026-11-12T13:40:59Z",
+          "app": {
+            "id": 15368
+          },
+          "pull_requests": [
+            {
+              "number": 2,
+              "head": {
+                "sha": "c6e2f3da085b94030be45bb3a07aca4c70dcdb71",
+                "repo": {
+                  "id": 1454898477
+                }
+              },
+              "base": {
+                "repo": {
+                  "id": 1454898477
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "level": "real_readonly_GitHub_API_observation",
+    "comments_url": "https://api.github.com/repos/AMindFlow/CoCo/issues/2/comments?per_page=100",
+    "comments_observed": 3,
+    "comments_per_page": 100,
+    "comments_retained": "machine summary markers only; unrelated prose omitted",
+    "checks_url": "https://api.github.com/repos/AMindFlow/CoCo/commits/c6e2f3da085b94030be45bb3a07aca4c70dcdb71/check-runs?filter=all&per_page=100",
+    "checks_total_count": 1,
+    "pr_url": "https://github.com/AMindFlow/CoCo/pull/2",
+    "required_check_source": "https://api.github.com/repos/AMindFlow/CoCo/rulesets/27100700",
+    "limitations": [
+      "Read-only capture, not a merge authorization.",
+      "Before/after Head checks bound the capture window; later changes are not excluded."
+    ]
+  }
+}

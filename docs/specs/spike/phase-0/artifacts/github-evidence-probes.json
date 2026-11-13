@@ -1,0 +1,196 @@
+{
+  "date": "2026-11-13",
+  "contract": "T007-readonly-v1",
+  "runtime": {
+    "node": "26.13.0"
+  },
+  "requirements": [
+    "R-004",
+    "AC-004"
+  ],
+  "levels": [
+    "real_readonly_API_observation",
+    "controlled_offline_classification"
+  ],
+  "independent_test_author": {
+    "session": "t007_validation_plan",
+    "scope": "requirements/public contract only; separate temporary workspace; no implementation reads",
+    "expected_red": "ERR_MODULE_NOT_FOUND before implementation"
+  },
+  "checks": [
+    {
+      "command": "node --check spikes/github-evidence-poc/evidence.mjs",
+      "exit_code": 0
+    },
+    {
+      "command": "node --test spikes/github-evidence-poc/evidence.test.mjs",
+      "exit_code": 0,
+      "top_level_groups": 15,
+      "node_test_reported_passed": 93,
+      "node_test_reported_failed": 0
+    }
+  ],
+  "observations": [
+    {
+      "input": "docs/specs/spike/phase-0/artifacts/github-pr2-evidence.json",
+      "result": {
+        "contractVersion": "T007-readonly-v1",
+        "target": {
+          "repository_id": 1454898477,
+          "pr_number": 2,
+          "head_sha": "c6e2f3da085b94030be45bb3a07aca4c70dcdb71"
+        },
+        "captured_at": "2026-11-12T23:44:39.413Z",
+        "review": {
+          "status": "PASS",
+          "reasons": [
+            "CURRENT_SHA_COMPLETED_NO_FINDINGS"
+          ],
+          "evidence_ids": [
+            6819254013
+          ]
+        },
+        "ci": {
+          "status": "PASS",
+          "reasons": [
+            "docs-integrity:CURRENT_SHA_CHECK_SUCCESS"
+          ],
+          "evidence_ids": [
+            131220983435
+          ],
+          "checks": [
+            {
+              "name": "docs-integrity",
+              "status": "PASS",
+              "reasons": [
+                "CURRENT_SHA_CHECK_SUCCESS"
+              ],
+              "evidence_ids": [
+                131220983435
+              ]
+            }
+          ]
+        },
+        "merge_authorized": false
+      }
+    },
+    {
+      "input": "docs/specs/spike/phase-0/artifacts/github-pr3-evidence.json",
+      "result": {
+        "contractVersion": "T007-readonly-v1",
+        "target": {
+          "repository_id": 1454898477,
+          "pr_number": 3,
+          "head_sha": "e6a68ab393e61cb470c26cb766a57b18dd98d34c"
+        },
+        "captured_at": "2026-11-12T23:44:39.441Z",
+        "review": {
+          "status": "PASS",
+          "reasons": [
+            "CURRENT_SHA_COMPLETED_NO_FINDINGS"
+          ],
+          "evidence_ids": [
+            6825815335
+          ]
+        },
+        "ci": {
+          "status": "PASS",
+          "reasons": [
+            "docs-integrity:CURRENT_SHA_CHECK_SUCCESS"
+          ],
+          "evidence_ids": [
+            131235591096
+          ],
+          "checks": [
+            {
+              "name": "docs-integrity",
+              "status": "PASS",
+              "reasons": [
+                "CURRENT_SHA_CHECK_SUCCESS"
+              ],
+              "evidence_ids": [
+                131235591096
+              ]
+            }
+          ]
+        },
+        "merge_authorized": false
+      }
+    }
+  ],
+  "independent_final_verification": {
+    "status": "passed_for_readonly_classification_only",
+    "session": "t007_final_verification",
+    "source_commit": "9281de867dae1b1438345496802fcbd66b7c10b3",
+    "checks": [
+      {
+        "command": "node --check spikes/github-evidence-poc/evidence.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node --test --test-reporter=dot spikes/github-evidence-poc/evidence.test.mjs",
+        "exit_code": 0,
+        "node_test_reported_passed": 93
+      },
+      {
+        "check": "original regression reproducers plus reserved-marker and PR association edge cases",
+        "tests": 5,
+        "exit_code": 0
+      },
+      {
+        "check": "two retained real API snapshot CLI evaluations",
+        "exit_code": 0,
+        "merge_authorized": false
+      },
+      {
+        "command": "node scripts/check-docs.mjs",
+        "exit_code": 0,
+        "markdown_files": 44,
+        "errors": 0,
+        "budget_warnings": 0
+      },
+      {
+        "check": "baseline-to-fixed-SHA and working-tree diff --check",
+        "exit_code": 0
+      },
+      {
+        "check": "source and input SHA-256",
+        "matched": 5,
+        "exit_code": 0
+      }
+    ],
+    "limitations": [
+      "No live API/credential access in independent verification.",
+      "No Cloud Review requested for this unpublished branch.",
+      "No real new-SHA push, formal Approval, merge_group, queue or merge performed."
+    ]
+  },
+  "not_verified": [
+    "actual new SHA push and fresh Review invalidation cycle",
+    "formal GitHub Approval identity and policy satisfaction",
+    "merge_group checks, queue failure removal or merge facts",
+    "production Adapter, approval or merge authorization"
+  ],
+  "source_sha256": {
+    "spikes/github-evidence-poc/evidence.mjs": "30c8a485bcadeb880184636fe23c7c7ab2721b2097f1f6a4bda453b32a31aeb0",
+    "spikes/github-evidence-poc/evidence.test.mjs": "ff38b3bd9d847a90344c6068854df3e7815fa24d4568dacaa74db5c12e436337",
+    "docs/specs/spike/phase-0/refs/t007-evidence-poc.md": "e4d3a68b3f54835b9438309b35e37fddcaea452762eed734920584a6617824b7",
+    "docs/specs/spike/phase-0/artifacts/github-pr2-evidence.json": "acbf7130fb6e050d4b663b75ca033deab58323ca356c902a0bd28710ad4c2733",
+    "docs/specs/spike/phase-0/artifacts/github-pr3-evidence.json": "582c7e79df201d03710a3fefcb18109267d5f8c5cb93ee3cb440b45e6d372120"
+  },
+  "independent_initial_review": {
+    "session": "t007_final_verification",
+    "source_commit": "ca3104facee6424f62d57df1460e864616530341",
+    "status": "changes_requested",
+    "findings": [
+      "newer incomplete machine state skipped in favor of old PASS",
+      "contradictory associations for the same PR hidden by one correct association"
+    ],
+    "regression_tests": {
+      "source": "t007_validation_plan",
+      "expected_red_exit_code": 1,
+      "failing_assertions": 5,
+      "subsequent_fixed_test_exit_code": 0
+    }
+  }
+}

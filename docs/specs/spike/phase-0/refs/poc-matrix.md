@@ -7,7 +7,7 @@ read_when:
 
 # Phase 0 能力矩阵
 
-日期：2026-11-12。层级：`未测 / 帮助声明 / 隔离协议实测 / 受控模拟 / 真实业务验证 / 阻塞`。
+更新：2026-11-13。层级：`未测 / 帮助声明 / 隔离协议实测 / 受控模拟 / 真实业务验证 / 阻塞`。
 一个层级不能替代另一个；本轮没有任何完整产品 AC 被宣称通过。
 本地观测针对 Codex CLI `0.166.0`、DSH Desktop/CLI `0.2.2-rc.1`；升级后复核。
 
@@ -31,9 +31,9 @@ read_when:
 | DSH Session 独占 | 未测 | 同 Session 跨进程互斥、旧实例停机与租约保护仍需验证 |
 | Desktop MCP / Leader | 未测 | 双 Client 实连、断连后台仍运行、人工继续领取正确 Run 事件 |
 | 自动恢复 Desktop Thread | 未测、可选 | 单独验证归属和可控制范围；基础流程保留人工兼容模式 |
-| 组织仓库前提 | API 实测：组织公开仓库，Rulesets 可读且数量 0；空远端已恢复原初始化 main 基线 | 能力前提可用不等于已启用保护或 Merge Queue；实际 PR/CI 记录在远端 |
-| Review / SHA | 未测 | 受控 PR 实触发，当前 SHA 与完成证据；无评论不得判 PASS |
-| CI / Merge Queue | 未测 | 实际 PR 与 merge_group SHA 检查、失败移队、远端合并事实 |
+| 组织仓库前提 | API 只读实测：main Ruleset Active，要求 Approval、原生队列和 docs-integrity/GitHub Actions；无 bypass | 配置不等于队列端到端通过；远端操作前重查，不改规则 |
+| Review / SHA | 真实只读 API 观察 + 离线分类：PR #2/#3 均有当前 SHA、可信 bot 与明确完成的无 findings 机器摘要 | 旧 SHA 失效和错误来源仅受控反例；未生成真实新 SHA 触发 Review；不是正式 Approval |
+| CI / Merge Queue | PR #2/#3 的 docs-integrity Check Run 均为当前 Head SHA 的 success，App ID 与实时 Required Check 匹配 | 只有文档 CI；真实 merge_group、失败移队与远端合并仍未测 |
 | 多项目与崩溃恢复 | 未测，依赖最小 Core PoC | 双 Project/Run 标记隔离、超时已启动、丢 Session、Core 重启无重复副作用 |
 
 ## 可复现范围
@@ -52,6 +52,13 @@ DSH 先以不存在 ID 验证拒绝，再在空工作区提交“不要用工具
 独立权限证据逐一关联 native tool_call/result，不采用模型对自己权限的自述。
 原始错误和 final text 含本机路径/Session ID，只留私有目录；结构化白名单记录：[existing-config-probes.json](../artifacts/existing-config-probes.json)。
 配置合同与安全限制见 [dsh-binding.md](dsh-binding.md)，不把本轮接入合同当作已实现的生产 Adapter。
+
+T007 的 [只读分类合同](t007-evidence-poc.md) 使用真实资源的最小白名单样本：[PR #2](../artifacts/github-pr2-evidence.json)、[PR #3](../artifacts/github-pr3-evidence.json)。
+采集前后 Head 一致；评论页未满且 Check Run total_count 与返回条数一致；样本保留具体来源与证据 ID。
+必需 check 从实时 Ruleset 读取，检查名称与 App ID 分开绑定；机器摘要必须以正文开头两行的已观察格式关联当前 SHA。
+分类器没有网络、凭据、审批或合并能力；算法反例为受控模拟，不视为真实推送/队列验收。
+执行与源码版本见 [github-evidence-probes.json](../artifacts/github-evidence-probes.json)，不将两次读取包装为未来持续有效的门禁。
+独立新会话在固定源码上复跑分类测试及额外反例，修复后未留相关阻塞；没有请求本地分支的 Cloud Review，不据此声称远端审查完成。
 
 ## 后续真实验收 Oracle
 
