@@ -7,9 +7,10 @@ read_when:
 
 # Phase 0 能力矩阵
 
-日期：2026-11-12。层级：`未测 / 帮助声明 / 隔离协议实测 / 受控模拟 / 真实业务验证 / 阻塞`。
+日期：2026-11-14。层级：`未测 / 帮助声明 / 隔离协议实测 / 受控模拟 / 真实业务验证 / 阻塞`。
 一个层级不能替代另一个；本轮没有任何完整产品 AC 被宣称通过。
-本地观测针对 Codex CLI `0.166.0`、DSH Desktop/CLI `0.2.2-rc.1`；升级后复核。
+本次更新仅覆盖 T008；其他行保留源基线的历史观测，当前远端和 Runtime 状态须由对应任务重新核对。
+既有 Runtime 历史观测针对 Codex CLI `0.166.0`、DSH Desktop/CLI `0.2.2-rc.1`；升级后复核。
 
 ## 实际观察
 
@@ -34,7 +35,7 @@ read_when:
 | 组织仓库前提 | API 实测：组织公开仓库，Rulesets 可读且数量 0；空远端已恢复原初始化 main 基线 | 能力前提可用不等于已启用保护或 Merge Queue；实际 PR/CI 记录在远端 |
 | Review / SHA | 未测 | 受控 PR 实触发，当前 SHA 与完成证据；无评论不得判 PASS |
 | CI / Merge Queue | 未测 | 实际 PR 与 merge_group SHA 检查、失败移队、远端合并事实 |
-| 多项目与崩溃恢复 | 未测，依赖最小 Core PoC | 双 Project/Run 标记隔离、超时已启动、丢 Session、Core 重启无重复副作用 |
+| 多项目与崩溃恢复 | 隔离进程实测 + 外部操作受控模拟：SQLite WAL 单 Core、双 Client/Project/Run、持久化意图、超时已启动不重派、三个崩溃窗口及确认恢复，独立17例通过 | 仅 T008 受控机制子集；fixture 的权威 inspect 不代表真实 DSH/GitHub 能力；生产权限、Session/Checkpoint 恢复和整项依赖未解除 |
 
 ## 可复现范围
 
@@ -52,6 +53,11 @@ DSH 先以不存在 ID 验证拒绝，再在空工作区提交“不要用工具
 独立权限证据逐一关联 native tool_call/result，不采用模型对自己权限的自述。
 原始错误和 final text 含本机路径/Session ID，只留私有目录；结构化白名单记录：[existing-config-probes.json](../artifacts/existing-config-probes.json)。
 配置合同与安全限制见 [dsh-binding.md](dsh-binding.md)，不把本轮接入合同当作已实现的生产 Adapter。
+
+T008 按 [受控 Core 合同](t008-core-poc.md) 先独立编写测试/fixture，再由 Leader 复核实现；源码固定为 `309050de`。
+独立最终验证实际命中 before_commit、after_commit、after_completion_observed；修复前的 start 身份错配已由独立回归复现，修复后17例通过。
+环境 socket 监听限制与功能结果分开记录；原始日志及 DB 仅在私有 fixture，脱敏计数与版本见 [core-recovery-probes.json](../artifacts/core-recovery-probes.json)。
+这些结果不勾选 T008 或 AC-004，不把持久化预算、fixture 效果次数或测试 token 当成生产租约、exactly-once 或可信审批。
 
 ## 后续真实验收 Oracle
 
