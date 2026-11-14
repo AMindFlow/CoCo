@@ -2,8 +2,8 @@
 
 ## 状态
 
-- Active tasks: T005
-- Updated: 2026-11-12
+- Active tasks: T005～T008 剩余能力；T008 受控机制子集已验证
+- Updated: 2026-11-14
 - Blockers: DSH 原生取消、并发/preset 与强读取隔离尚未证明；Desktop、Review、CI、Merge Queue 等仍待动态验收；详见 PoC 矩阵。
 - 任务 checkbox 是本切片唯一进度清单，不在 roadmap 或 current-state 复制。
 
@@ -45,3 +45,10 @@ T005 以后涉及真实执行和写入时，各自先固定 Fixture、权限、�
 完整通过范围、失败与未证项只在 [PoC 矩阵](refs/poc-matrix.md) 与关联结构化证据维护，T005 不提前勾选。
 新增 R-006/AC-007 来自用户本轮明确要求；接入合同已形成，生产 Adapter 尚未实现，不将合同视为已实现功能。
 本轮文档检查为 43 Markdown、0 错误、0 预算提示；`dsh_poc_plan` 只读复核后，修正了 T005 对授权配置读取的措辞及完整性检查范围。
+
+## T008 受控机制子集
+
+Leader 仅提前核验不调用 DSH/GitHub 的本地 Core 机制；T008 仍 depends: T005,T006，不解除整项依赖、生产权限或 Phase 0 退出门槛。
+独立 Tester `t008_validation_plan` 先定义 [T008 合同](refs/t008-core-poc.md)、测试与 fixture，Leader 复核后才授权实现。
+独立最终验证会话 `t008_final_verification` 对固定源码复测，发现的 start 身份错配由原 Tester 先补三例 RED，再修复重验；结果只在 [能力矩阵](refs/poc-matrix.md) 与其证据维护。
+本分支仅整理 T008 源码、合同及证据，不带入其他分支的探测；其他任务的技术完成记录在各自交付中，不由本 PR 提前勾选。

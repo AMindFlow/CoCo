@@ -1,0 +1,994 @@
+{
+  "observedOn": "2026-11-14",
+  "contract": "T008-core-fixture-v1",
+  "sourceCommit": "309050deaeaeab85c7b9bce333738a3550fa9298",
+  "specStatus": "approved / in_progress",
+  "scope": "Controlled Core mechanism subset of R-004/AC-004; real SQLite/IPC/processes and synthetic independently inspectable external operations. T008 overall dependencies unchanged.",
+  "versions": {
+    "node": "v26.13.0",
+    "sqlite": "3.54.0",
+    "mcp_sdk": "2.4.0",
+    "vitest": "5.1.0"
+  },
+  "sourceSha256": {
+    "core": "2c026b168e6c77f0d8b1c916c00ab3c0d88aade47e90d69477acf6deb03a0961",
+    "stdio": "4b504e551afc6160e3888c08f957543a35883a921a7d7a61e6e7d945f9d8b015",
+    "protocol": "094e87d2f358835b5d28438226b6fbae448f4761b2ac5d152d0d22e75b9b0df3",
+    "test": "bdc387e27d0f72283c614893b35df8f835f57733ba7fbbe9cadc16a6efd018af",
+    "fixture": "7bdc8192550c125ab55401125453373fc1f37069c3d9ff1f50b6ae9545a9f01d"
+  },
+  "validation": {
+    "plannerAndTestDeveloper": "t008_validation_plan",
+    "leaderAcceptedBeforeImplementation": true,
+    "initialExpectedRed": "Exit 1 before implementation; required Core entries absent, 14 cases not behaviorally executed.",
+    "initialFixtureSelfCheck": "Passed in authorized private socket environment; initial restricted sandbox EPERM retained as environmental limitation.",
+    "primaryFixedTestResult": {
+      "exitCode": 0,
+      "passed": 17,
+      "failed": 0,
+      "jsonReportSha256": "4a6b9794f79f729918dfdaf5beaf2363160fe152b63971741cf9dbe2452ffbc6"
+    },
+    "independentFinal": {
+      "session": "t008_final_verification",
+      "tests": 17,
+      "passed": 17,
+      "typecheckExit": 0,
+      "docsExit": 0,
+      "diffExit": 0,
+      "sourceIndexSha256": "f4a7aea38ddd5cc6d4442a5a7ef3be003e991147aacfd066ccc00341f8ed92f5",
+      "runtimeScope": "Fresh independent private fixture per case; privileged execution only for local Unix socket/process tests; no real external service.",
+      "revisionReview": "The same independent final-review session continued after repair with new private fixtures; no new-session claim for the revision."
+    },
+    "documentationAudit": {
+      "independentScope": "White-list evidence matched all 17 independent fixture entries; source/index/RED hashes, privacy, docs and whitespace checked before a wording correction.",
+      "finalPrimaryCheck": "Leader verified primary JSON success/17 passed/0 failed and its exact SHA256, plus all 17 fixture entries after the wording correction.",
+      "limitation": "Independent reviewer reached usage quota before completing the final documentation follow-up; runtime independent verification at sourceCommit remains complete."
+    },
+    "freshDependencyInstallation": {
+      "sourceCommit": "4a349ab",
+      "scope": "New empty temporary project directory on the same host; copied eight tracked PoC files byte-identically; no dependency directory reused.",
+      "node": "v26.13.0",
+      "pnpm": "11.25.0",
+      "install": "pnpm install --frozen-lockfile --ignore-scripts with a new private store; exit 0; 54 pinned packages downloaded and installed",
+      "initialOfflineAttempt": "Exit 1 because the initially selected store lacked a tarball; bundled pnpm wrapper used Node 24. Retried the installation with explicit Node 26 and online private store. No behavior test ran with Node 24.",
+      "typecheckExit": 0,
+      "testExit": 0,
+      "passed": 17,
+      "failed": 0,
+      "jsonReportSha256": "7af56a3ff2392187b0fd658a46e481e96e57e7f841e7522af780b02b6c2a90c6",
+      "validationSource": "Leader; additional reproducibility check, separate from fixed-SHA independent runtime validation",
+      "notProven": "A clean OS/container or lifecycle-script-enabled installation"
+    }
+  },
+  "reviewRepair": {
+    "finding": "P2: positive start identity/attempt/version mismatch was incorrectly classified unknown and automatically inspected.",
+    "originalSourceCommit": "80ec3a3106112c280687347b97bab642d7807984",
+    "regressionSource": "Independent Tester added three C2 cases; original fourteen assertions were retained.",
+    "redResult": {
+      "exitCode": 1,
+      "failedCases": 3,
+      "actual": "unknown",
+      "expected": "needs_attention",
+      "jsonReportSha256": "00b2b9259326c3c4690756a587117b169b5e9349ea167f474aff08b6a7830c81"
+    },
+    "resolution": "Positive mismatched start observations persist needs_attention for Operation and fixture Delivery; no automatic inspect; resource remains held.",
+    "independentPostFix": "All 17 passed; three repaired cases each recorded 1 request, 1 actual start, 0 effects, 0 inspect while an independent project completed."
+  },
+  "fixtures": [
+    {
+      "label": "coco-t008-c1",
+      "created_utc": "2026-11-13T19:33:02.299Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 1
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "acknowledged",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": true,
+      "protocol_errors": 0,
+      "raw_log_bytes": 1944
+    },
+    {
+      "label": "coco-t008-c2",
+      "created_utc": "2026-11-13T19:33:03.115Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        },
+        {
+          "alias": "operation-2",
+          "project_id": "project-B",
+          "run_id": "run-B1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        },
+        {
+          "alias": "operation-3",
+          "project_id": "project-A",
+          "run_id": "run-A2",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "completed",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 3
+        },
+        {
+          "type": "operation_requested",
+          "count": 3
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 3
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 3
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 5611
+    },
+    {
+      "label": "coco-t008-c2-old_attempt",
+      "created_utc": "2026-11-13T19:33:03.738Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_requested",
+          "count": 1
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 1974
+    },
+    {
+      "label": "coco-t008-c2-old_version",
+      "created_utc": "2026-11-13T19:33:04.050Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_requested",
+          "count": 1
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 1968
+    },
+    {
+      "label": "coco-t008-c2-wrong_scope",
+      "created_utc": "2026-11-13T19:33:04.365Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_requested",
+          "count": 1
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 1974
+    },
+    {
+      "label": "coco-t008-c2-start-old_attempt",
+      "created_utc": "2026-11-13T19:33:04.672Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 0,
+          "inspect_received": 0
+        },
+        {
+          "alias": "operation-2",
+          "project_id": "project-B",
+          "run_id": "run-B1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 2
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 2990
+    },
+    {
+      "label": "coco-t008-c2-start-old_version",
+      "created_utc": "2026-11-13T19:33:05.122Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 0,
+          "inspect_received": 0
+        },
+        {
+          "alias": "operation-2",
+          "project_id": "project-B",
+          "run_id": "run-B1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 2
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 2984
+    },
+    {
+      "label": "coco-t008-c2-start-wrong_scope",
+      "created_utc": "2026-11-13T19:33:05.588Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 0,
+          "inspect_received": 0
+        },
+        {
+          "alias": "operation-2",
+          "project_id": "project-B",
+          "run_id": "run-B1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 2
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 2990
+    },
+    {
+      "label": "coco-t008-c3-before_commit",
+      "created_utc": "2026-11-13T19:33:06.013Z",
+      "operations": [],
+      "final_core_operations": [],
+      "events": [],
+      "deliveries": [],
+      "barriers": [
+        "before_commit"
+      ],
+      "ready_count": 2,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 116
+    },
+    {
+      "label": "coco-t008-c3-after_commit",
+      "created_utc": "2026-11-13T19:33:06.459Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 1
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [
+        "after_commit"
+      ],
+      "ready_count": 2,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 1944
+    },
+    {
+      "label": "coco-t008-c4",
+      "created_utc": "2026-11-13T19:33:06.900Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 5
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 1
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 2,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 4449
+    },
+    {
+      "label": "coco-t008-c5-unknown",
+      "created_utc": "2026-11-13T19:33:08.630Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 0,
+          "inspect_received": 2
+        },
+        {
+          "alias": "operation-2",
+          "project_id": "project-B",
+          "run_id": "run-B1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 2
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 4031
+    },
+    {
+      "label": "coco-t008-c5-unavailable",
+      "created_utc": "2026-11-13T19:33:09.099Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 0,
+          "inspect_received": 2
+        },
+        {
+          "alias": "operation-2",
+          "project_id": "project-B",
+          "run_id": "run-B1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 2
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 4043
+    },
+    {
+      "label": "coco-t008-c5-not_found",
+      "created_utc": "2026-11-13T19:33:09.587Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 0,
+          "inspect_received": 2
+        },
+        {
+          "alias": "operation-2",
+          "project_id": "project-B",
+          "run_id": "run-B1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 2
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 4037
+    },
+    {
+      "label": "coco-t008-c5-not_started_untrusted",
+      "created_utc": "2026-11-13T19:33:10.075Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 0,
+          "inspect_received": 2
+        },
+        {
+          "alias": "operation-2",
+          "project_id": "project-B",
+          "run_id": "run-B1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 1
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 1
+        },
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 2
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "pending",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 1,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 4097
+    },
+    {
+      "label": "coco-t008-c5-authoritative",
+      "created_utc": "2026-11-13T19:33:10.560Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 2,
+          "actual_starts": 0,
+          "effect_count": 0,
+          "inspect_received": 4
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "needs_attention",
+          "start_count": 2
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_requested",
+          "count": 1
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "needs_attention",
+          "count": 1
+        }
+      ],
+      "barriers": [],
+      "ready_count": 3,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 3764
+    },
+    {
+      "label": "coco-t008-c6",
+      "created_utc": "2026-11-13T19:33:11.330Z",
+      "operations": [
+        {
+          "alias": "operation-1",
+          "project_id": "project-A",
+          "run_id": "run-A1",
+          "start_requests": 1,
+          "actual_starts": 1,
+          "effect_count": 1,
+          "inspect_received": 2
+        }
+      ],
+      "final_core_operations": [
+        {
+          "status": "completed",
+          "start_count": 1
+        }
+      ],
+      "events": [
+        {
+          "type": "operation_completed",
+          "count": 1
+        },
+        {
+          "type": "operation_requested",
+          "count": 1
+        }
+      ],
+      "deliveries": [
+        {
+          "target": "fixture",
+          "status": "completed",
+          "count": 1
+        },
+        {
+          "target": "leader",
+          "status": "acknowledged",
+          "count": 1
+        }
+      ],
+      "barriers": [
+        "after_completion_observed"
+      ],
+      "ready_count": 4,
+      "competitor_refused": false,
+      "protocol_errors": 0,
+      "raw_log_bytes": 2636
+    }
+  ],
+  "notVerified": [
+    "Real DSH/GitHub Adapter inspection, native cancellation, credential-read or OS identity isolation",
+    "Production Core/API/schema/migrations, trusted human approvals, physical repository/worktree leases and checkpoint recovery",
+    "Real Desktop disconnect/reconnect in this Core run or event-triggered product wakeup",
+    "T005/T007 completion, full T008 dependency gate, Phase 0 exit, product AC-01 through AC-23 and human acceptance"
+  ],
+  "redactions": [
+    "Private fixture paths",
+    "Actual operation/attempt/event identifiers replaced by aliases or aggregate counts",
+    "Fixture tokens and effect markers",
+    "Original stderr and tool/API payloads"
+  ]
+}
